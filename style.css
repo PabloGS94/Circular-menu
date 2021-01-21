@@ -1,0 +1,69 @@
+html, body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+.menu{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+.menu img{
+    height: 100%;
+    width: 100%;
+    position:relative;
+}
+nav{ 
+    position: absolute;   
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+ul{    
+    margin: 0;
+    padding: 0;
+    position: absolute;   
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    list-style: none;
+}
+li{
+    font-size: 40px;
+}
+.link{
+    position: absolute;
+    cursor: pointer;
+    transition: all .1s ease-out;
+    
+    font-size: 20px;
+}
+.minus-two{
+    top: 15%;
+    right:30%;
+}
+.minus-one{
+    top: 30%;
+    right:40%;
+}
+.one{
+    top: 45%;
+    right:50%;
+}
+.two{
+    top: 60%;
+    right:40%;
+}
+.three{
+    top: 75%;
+    right:30%;
+}
+.main{    
+    font-size: 40px;
+}
