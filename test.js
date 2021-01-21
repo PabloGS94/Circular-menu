@@ -3,9 +3,7 @@
 const listItems = document.querySelectorAll('li');
 // Iterate through all items
 listItems.forEach(function(element,index){
-    element.addEventListener('click', ()=>{
-
-        let elementPos = $(element).position();        
+    element.addEventListener('click', ()=>{       
 
         // Get all the previous and next elements to the one clicked
         const previousAll = $(element).prevAll();
@@ -22,11 +20,7 @@ listItems.forEach(function(element,index){
             element.classList.add('main');
 
             //Iterate through all elements before the clicked one
-            previousAll.each((index,item)=>{
-
-                // Get the position of each element
-                let itemPos = $(item).position();
-                
+            previousAll.each((index,item)=>{                
                 
                 // Define all previous and next elements to each one of the items
                 const itemPrevElements = $(item).prevAll();
@@ -37,93 +31,54 @@ listItems.forEach(function(element,index){
                     
                     //Times that each element needs to move depending on how may steps away are they from the old Main
                     let timesToMove = index + 1;
-
                     //Remove old Main
                     item.removeAttribute('main');
                     item.classList.remove('main');
 
-                    //Move old Main and next item
-                    $(item).animate({
-                        top: itemPos.top + (-150 * timesToMove),
-                        left: itemPos.left + (150 * timesToMove)
-                    })
+                    //Move selected Element, and if there is more than one item in between, repeat movement
+                    animateTopLeft(element)
+                    for (let i = 1; i < timesToMove; i++) {
+                        setTimeout(animateTopLeft, 100, element)
+                    }
 
+                    //Move old Main, and if there is more than one item in between, repeat movement
+                    animateTopRight(item)
+                    for (let i = 1; i < timesToMove; i++) {
+                        setTimeout(animateTopRight, 100, item)
+                    }
+
+                    // If the items need to move more than one time
                     if(timesToMove > 1){
-                        const nextSibling = $(itemNextElements[0])
-                        let nextSiblingPos = $(nextSibling).position();
-                        console.log('moving left');
-                        $(nextSibling).animate({
-                            top: nextSiblingPos.top -150,
-                            left: nextSiblingPos.left -150
-                        })     
-                        const newSiblingPos = $(nextSibling).position();                  
-                        console.log('moving right'); 
-                        $(nextSibling).animate({
-                            top: newSiblingPos.top -300,
-                            left: newSiblingPos.left +150
-                        })
+                        // Move each item previous to old Main timesToMove times
+                        for (let i = 0; i < timesToMove; i++) {
+                            const prevSibling = itemPrevElements[i];
+                            animateTopRight(prevSibling);
+                            setTimeout(animateTopRight,100, prevSibling);
+                        }
+                        //Move each item after Main first left then right( passing through center effect ) as many times as items between old Main and selected item
+                        for (let i = 0; i < itemNextElements.length - 1; i++) {
+                            const nextSibling = itemNextElements[i];
+                            animateTopLeft(nextSibling);
+                            setTimeout(animateTopRight,100, nextSibling);
+                        }
 
-                    }else{
+                    }
+                    //Else if items need to move only once, then go ahead and move one time in the correct direction
+                    else{
                         // Move all items previous to old Main to top-right
                         itemPrevElements.each((index, prevElement)=>{
-                            let prevElemPos = $(prevElement).position()
-                            $(prevElement).animate({
-                                top: prevElemPos.top + (-150 * timesToMove),
-                                left: prevElemPos.left + (150 * timesToMove)
-                            })
+                            animateTopRight(prevElement);
                         })
-                        //Move all items after old Main to down-right
-                        itemNextElements.each((index, nextElement)=>{      
-                            let nextElemPos = $(nextElement).position()                                 
-                            $(nextElement).animate({
-                                top: nextElemPos.top + (-150 * timesToMove),
-                                left: nextElemPos.left  + (-150 * timesToMove)
-                            })
-                        })
-                    }
-                }else{
-                    return null;
-                    // If the item is the last one on the list, we find how many positions are between the item and the Main
-                    if (itemPrevElements[0] == undefined){
-                        console.log('Last item:',item);
+                        //Move all items after old Main to top-left
                         itemNextElements.each((index, nextElement)=>{
-                            if(nextElement.hasAttribute('main')){
-                                console.log('Main is:',nextElement,index);
-                                // If its more than 2 steps we hide it else we show it
-                                if(index>1){ 
-                                    $(item).animate({
-                                        top:itemY - 550,
-                                        left:itemX + 550
-                                    })
-                                }else{                
-                                    $(item).animate({
-                                        top:itemY - 150,
-                                        left:itemX + 150
-                                    })
-                                }                       
-                            }
-                        });
-                    }
-                    // If the item is not the last on the list, then we swap the position of the item to it's previous one
-                    else{                
-                        $(item).animate({
-                            top:itemY - 150,
-                            left:itemX + 150
+                            animateTopLeft(nextElement);
                         })
                     }
                 }
             })
 
             //Iterate through all elements after the clicked one
-            nextAll.each((index,item)=>{ 
-
-                // Get the position of each element
-                let itemPos = $(item).position();     
-
-                // Get the position of each element
-                let itemX = $(item).position().left;
-                let itemY = $(item).position().top;
-                
+            nextAll.each((index,item)=>{                 
                 
                 // Define all previous and next elements to each one of the items
                 const itemPrevElements = $(item).prevAll();
@@ -139,56 +94,42 @@ listItems.forEach(function(element,index){
                     item.removeAttribute('main');
                     item.classList.remove('main');
 
-                    //Move old Main and next item
-                    $(item).animate({
-                        top: itemPos.top + (150 * timesToMove),
-                        left: itemPos.left + (150 * timesToMove)
-                    })
-
-                    // Move all items previous to old Main to top-right
-                    itemPrevElements.each((index, prevElement)=>{
-                        let prevElemPos = $(prevElement).position()
-                        $(prevElement).animate({
-                            top: prevElemPos.top + (150 * timesToMove),
-                            left: prevElemPos.left + (-150 * timesToMove)
-                        })
-                    })
-                    //Move all items after old Main to down-right
-                    itemNextElements.each((index, nextElement)=>{      
-                        let nextElemPos = $(nextElement).position()                                 
-                        $(nextElement).animate({
-                            top: nextElemPos.top + (150 * timesToMove),
-                            left: nextElemPos.left  + (150 * timesToMove)
-                        })
-                    })
-                }else{
-                    return;
-                    // If the item is the last one on the list, we find how many positions are between the item and the Main
-                    if (itemNextElements[0] == undefined){
-                        console.log('Last item:',item);
-                        itemPrevElements.each((index, prevElement)=>{
-                            if(prevElement.hasAttribute('main')){
-                                console.log('Main is:',prevElement,index);
-                                // If its more than 2 steps we hide it else we show it
-                                if(index>1){
-                                    $(item).animate({
-                                        top:itemY + 550,
-                                        left:itemX + 550
-                                    })
-                                }else{               
-                                    $(item).animate({
-                                        top:itemY - 150,
-                                        left:itemX - 150
-                                    })
-                                }                       
-                            }
-                        });
+                    //Move selected Element, and if there is more than one item in between, repeat movement
+                    animateBotLeft(element)
+                    for (let i = 1; i < timesToMove; i++) {
+                        setTimeout(animateBotLeft, 100, element)
                     }
-                    // If the item is not the last on the list, then we swap the position of the item to it's previous one
-                    else{                
-                        $(item).animate({
-                            top:itemY - 150,
-                            left:itemX - 150
+
+                    //Move old Main, and if there is more than one item in between, repeat movement
+                    animateBotRight(item)
+                    for (let i = 1; i < timesToMove; i++) {
+                        setTimeout(animateBotRight, 100, item)
+                    }
+                    
+                    // If the items need to move more than one time
+                    if(timesToMove > 1){
+                        // Move each item previous to old Main timesToMove times
+                        for (let i = 0; i < timesToMove; i++) {
+                            const nextSibling = itemNextElements[i];
+                            animateBotRight(nextSibling);
+                            setTimeout(animateBotRight,100, nextSibling);
+                        }
+                        //Move each item first left then right( passing through center effect ) as many times as items between old Main and selected item
+                        for (let i = 0; i < itemPrevElements.length - 1; i++) {
+                            const nextSibling = itemPrevElements[i];
+                            animateBotLeft(nextSibling);
+                            setTimeout(animateBotRight,100, nextSibling);
+                        }
+                    }
+                    //Else if items need to move only once, then go ahead and move one time in the correct direction
+                    else{
+                        // Move all items previous to old Main to top-right
+                        itemPrevElements.each((index, prevElement)=>{
+                            animateBotLeft(prevElement);
+                        })
+                        //Move all items after old Main to down-right
+                        itemNextElements.each((index, nextElement)=>{
+                            animateBotRight(nextElement);
                         })
                     }
                 }
@@ -197,3 +138,56 @@ listItems.forEach(function(element,index){
     })
     
 });
+
+function animateTopLeft(el){    
+    TweenLite.to(el, .2,{
+        y: "-=200",
+        x: "-=100"
+    })
+    // $(el).animate({
+    //     top: "-=200",
+    //     left: "-=100"
+    // })
+}
+
+function animateTopRight(el){
+    TweenLite.to(el, .2,{
+        y: "-=200",
+        x: "+=100"
+    })
+    // const elPos = $(el).position();
+    // $(el).animate({
+    //     top: "-=200",
+    //     left: "+=100"
+    // })
+}
+
+function animateBotLeft(el){
+    TweenLite.to(el, .2,{
+        y: "+=200",
+        x: "-=100"
+    })
+    // $(el).animate({
+    //     top: "+=200",
+    //     left: "-=100"
+    // })
+}
+
+function animateBotRight(el){
+    TweenLite.to(el, .2,{
+        y: "+=200",
+        x: "+=100"
+    })
+    // const elPos = $(el).position();
+    // $(el).animate({
+    //     top: "+=200",
+    //     left: "+=100"
+    // })
+}
+
+function animateToZero(el){
+    $(el).animate({
+        top:0,
+        left:0
+    })
+}

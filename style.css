@@ -28,8 +28,8 @@ ul{
     margin: 0;
     padding: 0;
     position: absolute;   
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
     height: 100%;
     width: 100%;
     list-style: none;
@@ -40,30 +40,39 @@ li{
 .link{
     position: absolute;
     cursor: pointer;
-    transition: all .1s ease-out;
     
     font-size: 20px;
 }
 .minus-two{
-    top: 15%;
-    right:30%;
+    top: -400px;
+    left: 200px;
+    /* top: 15%;
+    right:30%; */
 }
 .minus-one{
-    top: 30%;
-    right:40%;
+    top: -200px;
+    left: 100px;
+    /* top: 30%;
+    right:40%; */
 }
 .one{
-    top: 45%;
-    right:50%;
+    top: 0px;
+    left: 0px;
+    /* top: 45%;
+    right:50%; */
 }
 .two{
-    top: 60%;
-    right:40%;
+    top: 200px;
+    left: 100px;
+    /* top: 60%;
+    right:40%; */
 }
 .three{
-    top: 75%;
-    right:30%;
+    top: 400px;
+    left: 200px;
+    /* top: 75%;
+    right:30%; */
 }
-.main{    
-    font-size: 40px;
+.main{   
+    font-size: 40px; 
 }
