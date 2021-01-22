@@ -1,3 +1,36 @@
+const ourWorkBtn =  document.querySelector('#our-work-btn');
+const menu = document.querySelector('#menu');
+
+//Show menu
+ourWorkBtn.addEventListener('click', ()=>{
+    showMenu();
+})
+
+function showMenu(){
+    menu.style.display = 'block'
+    //Animate circles
+    const firstCircle = document.querySelector('#first-circle');
+    const secondCircle = document.querySelector('#second-circle');
+    const thirdCircle = document.querySelector('#third-circle');
+    const whiteBackground = document.querySelector('#white-background');
+    const nav = document.querySelector('#nav')
+    $(firstCircle).animate({
+        left:'40%'
+    },1000);
+    $(secondCircle).animate({
+        left:'50%'
+    },1000);
+    $(thirdCircle).animate({
+        left:'20%'
+    },1000);
+    $(whiteBackground).animate({
+        left:0
+    },1000)
+    
+    setTimeout(()=>{
+    nav.style.background = 'none';
+    },600)
+}
 
 // Get all items on the menu
 const listItems = document.querySelectorAll('li');
@@ -61,8 +94,8 @@ function checkKey(e) {
 
     e = e || window.event;
 
-    if (e.keyCode === 38) {
-        // Arrow up was pressed, move every item upwards
+    if (e.keyCode === 40) {
+        // Arrow up was pressed, move to item above
         reversedArr.forEach(function(element, index){
             // Search for the Main item
             if(element.hasAttribute('main')){
@@ -79,8 +112,8 @@ function checkKey(e) {
             }
         });
     }
-    else if (e.keyCode === 40) {
-        // Arrow down was pressed, move every item downwards
+    else if (e.keyCode === 38) {
+        // Arrow down was pressed, move to item below
         listItems.forEach(function(element, index){
             // Search for the Main item
             if(element.hasAttribute('main')){
