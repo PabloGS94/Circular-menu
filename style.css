@@ -10,7 +10,7 @@ html, body{
     left: 0;
     height: 100%;
     width: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 .menu img{
     height: 100%;
@@ -35,9 +35,6 @@ ul{
     list-style: none;
 }
 li{
-    width: 200px;
-    height: 150px;
-    border: 1px solid black;
     font-size: 40px;
 }
 .link{
@@ -48,33 +45,31 @@ li{
 .minus-two{
     top: -400px;
     left: 200px;
-    /* top: 15%;
-    right:30%; */
 }
 .minus-one{
     top: -200px;
     left: 100px;
-    /* top: 30%;
-    right:40%; */
+}
+.minus-three{
+    top: -600px;
+    left: 300px;
 }
 .one{
     top: 0px;
     left: 0px;
-    /* top: 45%;
-    right:50%; */
 }
 .two{
     top: 200px;
     left: 100px;
-    /* top: 60%;
-    right:40%; */
 }
 .three{
     top: 400px;
     left: 200px;
-    /* top: 75%;
-    right:30%; */
 }
 .main{   
     font-size: 40px; 
+}
+.four{
+    top: 600px;
+    left: 300px;
 }
