@@ -341,6 +341,7 @@ function animateBotRight(el){
     })
 }
 
+// Takes a list that will be hidden and resets the first item to be the main one and takes whatever item was main before and removes the attribute
 function resetHiddenList(list){
     const thirdListNodeEl = $('#'+list.id+' li');
     //Reset Main attribute for the list that will be hidden
