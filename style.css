@@ -34,9 +34,8 @@ html, body{
     height: 100%;
     width: 100%;
     overflow: hidden;
-    /* background: #FEA34A; */
-    background: #FF7C00;
-    transition: all .5s ease-in-out;
+    background: #FF7C00; 
+    animation: fadeIn ease .3s;
 }
 .menu-image{
     height: 100%;
@@ -65,9 +64,10 @@ html, body{
     font-size: 40px;
     color: white;
     position: absolute;
-    top: 50%;
+    top: 45%;
     right: 50px;
     z-index: 10;
+    animation: fadeIn ease-in-out 3s; 
 }
 
 
@@ -93,17 +93,20 @@ ul{
     top: 45%;
     left: 63%;
     z-index: 10;
-    
+    animation: fadeIn ease-in-out 1s;  
+    display: none;
 }
-#second-list{
+.second-list{
     top: 45%;
-    left: 30%;
+    left: 28%;
     z-index: 10;
+    display: none;
 }
-#third-list{
+.third-list{
     top: 45%;
-    left: 5%;
+    left: 0%;
     z-index: 10;
+    display: none;
 }
 li{
     font-size: 40px;
@@ -123,7 +126,7 @@ li i{
     cursor: pointer; 
     font-size: 20px;
     font-weight: bold;    
-    animation: fadeIn ease 4s;
+    animation: fadeIn ease 3s;
     transition: all 0s ease-in-out;
     color: whitesmoke;
     font-family: 'Roboto Condensed', sans-serif;

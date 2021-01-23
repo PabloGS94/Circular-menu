@@ -17,13 +17,13 @@
     <div class="menu" id="menu">
         <nav id='nav'>
             <ul id='first-list'>
-                <li main='true'  class='link main'><i class="fas fa-caret-left"></i>Magento Ecommerce</li>
-                <li class='link'><i class="fas fa-caret-left"></i>Wordpress Website</li>
+                <li main='true' sub-list='magento-list' class='link main'><i class="fas fa-caret-left"></i>Magento Ecommerce</li>
+                <li class='link' sub-list='test-list'><i class="fas fa-caret-left"></i>Wordpress Website</li>
                 <li class='link'><i class="fas fa-caret-left"></i>Web Development</li>
                 <li class='link'><i class="fas fa-caret-left"></i>Digital Marketing</li>
             </ul>
-            <ul id='second-list'>
-                <li main='true'  class='link main'><i class="fas fa-sort"></i></i>Magento Design and Development</li>
+            <ul id='magento-list' class='second-list something'>
+                <li main='true' sub-list='integration-list'  class='link main'><i class="fas fa-sort"></i></i>Magento Design and Development</li>
                 <li class='link'><i class="fas fa-sort"></i>Magento 2.0</li>
                 <li class='link'><i class="fas fa-sort"></i>Magento Integrations</li>
                 <li class='link'><i class="fas fa-sort"></i>Magento Migrations</li>
@@ -31,9 +31,14 @@
                 <li class='link'><i class="fas fa-sort"></i>Magento Support & Maintenance</li>
                 <li class='link'><i class="fas fa-sort"></i>Magento Hosting & Server Migration</li>
             </ul>
-            <ul id='third-list'>
+            <ul id='integration-list' class='third-list'>
                 <li main='true'  class='link main'><i class="fas fa-caret-left"></i>Futura Integration</li>
                 <li class='link'><i class="fas fa-caret-left"></i>Nosto Integration</li>
+            </ul>
+            <ul id='test-list' class='second-list'>
+                <li main='true'  class='link main'><i class="fas fa-sort"></i>Test link</li>
+                <li class='link'><i class="fas fa-sort"></i>Another test link</li>
+                <li class='link'><i class="fas fa-sort"></i>And one more</li>
             </ul>
         </nav>
         <img id='first-circle' class='menu-image' src="firstCircle.png" alt="">

@@ -6,45 +6,34 @@ openMenu.addEventListener('click', ()=>{
     showMenu();
 })
 
-// Get all lists
+// Get Main list items as nodeList and its parent(ul)
 const firstList = document.querySelectorAll('#first-list li');
-const secondList = document.querySelectorAll('#second-list li');
-const thirdList = document.querySelectorAll('#third-list li');
-// const thirdListItemsArr = jQuery.makeArray(thirdList);
-// const seconReversedArr = secondListItemsArr.reverse();
-// const thirdReversedArr = thirdListItemsArr.reverse();
+const firstUl = document.querySelector('#first-list');
 
-animateList(firstList);
-animateList(secondList);
-animateList(thirdList);
-listonForArrows(firstList);
+animateList(firstList, firstUl);
+// listenForArrows(firstList);
 
+// First function that runs to display the menu 
 function showMenu(){
     menu.style.display = 'block';
-    //Select background  menu elements
-    const firstCircle = document.querySelector('#first-circle');
-    const secondCircle = document.querySelector('#second-circle');
-    const thirdCircle = document.querySelector('#third-circle');
-    const greyBackground = document.querySelector('#grey-background');
-    const nav = document.querySelector('#nav')
     //Animate menu background
-    $(secondCircle).animate({
-        left:'50%'
-    },1200);
-    $(thirdCircle).animate({
-        left:'15%'
-    },1400);
-    $(greyBackground).animate({
-        left:0
-    },1000)    
-    $(firstCircle).animate({
+    $('#second-circle').animate({
+        left:'40%'
+    },1000);
+    $('#third-circle').animate({
+        left:'-25%'
+    },1000);   
+    $('#first-circle').animate({
         left:'45%'
-    },1400);    
-    setTimeout(()=>{
-    nav.style.background = 'none';
-    },600)
+    },1000);    
+    $('#first-list').animate({
+        left: '57%'
+    },700)
 }
-function animateList(list){
+
+// Takes two inputs, a nodeList with all the li items and its parent and displays the list, aswell as styling the initial location of each item
+function animateList(list, listParent){
+    listParent.style.display = 'block';
     // Iterate through all elements on the menu and add a click event listener to display that item in the center and move the rest accordingly
     list.forEach(function(element, index){
         // Style every element to the bottom right initially
@@ -52,21 +41,73 @@ function animateList(list){
         element.style.left = 100*index + 'px'; 
         if(element.getAttribute('main') == 'true'){
             //Display arrow icon
-            element.childNodes[0].style.visibility = 'visible';
+            if(element.childNodes[0].classList[0] == "fas"){
+                element.childNodes[0].style.visibility = 'visible';
+            }
         }
         element.addEventListener('click', ()=>{ 
             listenForClick(element)        
         })
     });
+    
+    listenForArrows(list);
 }
 
-// Main function that determines the element that will be displayed in the center(selected element)
+let fullMenuDisplayed = false;
+//Function that animates the background and displays the secondary menu
+function displaySecondList(subListUl,subList){
+    // Prevents background animation from firing again if another secondary menu has been displayed previously
+    if (fullMenuDisplayed === true) {
+        // Get all secondary lists and check which one is displayed  and hide it   
+        $('.second-list').each((index,secondList)=>{
+            if (secondList.style.display === 'block') {
+                resetHiddenList(secondList);
+                secondList.style.display = 'none';
+            }
+        }) 
+        $('.third-list').each((index, thirdList)=>{
+            resetHiddenList(thirdList);
+            thirdList.style.display = 'none';
+        }) 
+        // Then display the new sub-menu
+        animateList(subList, subListUl);
+    }else{
+        $('#second-circle').animate({
+            left:'50%'
+        },1000);
+        $('#third-circle').animate({
+            left:'15%'
+        },1000);
+        $('#first-list').animate({
+            left: '63%'
+        },700)    
+        $('#grey-background').animate({
+            left:0
+        },0) 
+        fullMenuDisplayed = true;
+        animateList(subList, subListUl);
+    }
+}
+// Function that displays the third row of lists
+function displayThirdList(subListUl, subList){
+    // Get all third lists and check which one is displayed  and hide it   
+    $('.third-list').each((index,list)=>{
+        if (list.style.display === 'block') {
+            list.style.display = 'none';
+        }
+    })  
+    // Then display the new sub-menu
+    animateList(subList, subListUl);
+}
+
+// Main function that determines the element that will be displayed in the center(selected element) and the sub-list related to that item
 function listenForClick(element){
         // If its the main element, nothing moves
-        if(element.getAttribute('main') == 'true'){
-            console.log('Element is main');
-            //Open another menu?
-        
+        if(element.getAttribute('main') == 'true'){ 
+            // Search for the Main item
+            if(element.hasAttribute('main')){
+                handleSubLists(element);
+            }
         // If the element is not main iterate through previous and next to find Main
         }else{    
             // Get all the previous and next elements to the one clicked
@@ -96,36 +137,42 @@ function listenForClick(element){
             element.setAttribute('main', 'true');
             element.classList.add('main');
             //Display arrow icon
-            element.childNodes[0].style.visibility = 'visible';
+            if(element.childNodes[0].classList[0] == "fas"){
+                element.childNodes[0].style.visibility = 'visible';
+            }
+            handleSubLists(element);
         }
 }
 
+
 //Listens for arrow keys function and if its being pressed down or just pressed once
-function listonForArrows(list){
+function listenForArrows(list){
     // Transform each list from a nodeList to an array( necessary in order to reverse it)
     const listArr = jQuery.makeArray(list);
     // Reverse each array(necessary for arrow up functionality to prevent eternal loop through items)
     const reversedArr = listArr.reverse();
-    var down = {};
+
     $(document).keydown(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
-        if(keycode == '40'){
-                // Arrow up was pressed, move to item above
-                reversedArr.forEach(function(element, index){
-                    // Search for the Main item
-                    if(element.hasAttribute('main')){
-                        // If the Main item is the last one then we return null
-                        if (reversedArr[index-1] === undefined) {
-                            return null;
-                        }
-                        // Else we move every item upwards and we set the next item as the Main
-                        else{
-                        moveItemsUp(element);
-                        reversedArr[index-1].setAttribute('main', 'true');
-                        reversedArr[index-1].classList.add('main')                    
-                        reversedArr[index-1].childNodes[0].style.visibility = 'visible';
-                        }
+        if(keycode === 40){
+            // Arrow up was pressed, move to item above
+            reversedArr.forEach(function(element, index){
+                // Search for the Main item
+                if(element.hasAttribute('main')){
+                    // If the Main item is the last one then we return null
+                    if (reversedArr[index-1] === undefined) {
+                        return null;
                     }
+                    // Else we move every item upwards and we set the next item as the Main
+                    else{
+                    moveItemsUp(element);
+                    reversedArr[index-1].setAttribute('main', 'true');
+                    reversedArr[index-1].classList.add('main');                        
+                    if(reversedArr[index-1].childNodes[0].classList[0] == "fas"){
+                        reversedArr[index-1].childNodes[0].style.visibility = 'visible'; 
+                    }                              
+                    }
+                }
             })
         }else if(keycode === 38){
             // Arrow down was pressed, move to item below
@@ -140,22 +187,65 @@ function listonForArrows(list){
                     else{                
                         moveItemsDown(element);           
                         list[index-1].setAttribute('main', 'true');
-                        list[index-1].classList.add('main');           
-                        list[index-1].childNodes[0].style.visibility = 'visible';    
+                        list[index-1].classList.add('main'); 
+                        if(list[index-1].childNodes[0].classList[0] == "fas"){
+                            list[index-1].childNodes[0].style.visibility = 'visible'; 
+                        }          
                     }
                 }
             });
-        }else if(keycode === 37){
-            console.log('left arrow clicked');
+        }else if(keycode === 37 || keycode === 13){            
+            list.forEach(function(element, index){
+                // Search for the Main item
+                if(element.hasAttribute('main')){
+                    handleSubLists(element);
+                }
+            });
         }
     });
-
 }
 
 
-/*
-    Takes two inputs, a required element and an optional value in case the element must move several times.
-*/
+//Takes the Main element either from a click or from arrow left  and displays it's sub-list
+function handleSubLists(element){
+            // We get the atribute that makes the relationship between the link and the sub-menu
+            const subListName = element.getAttribute('sub-list');
+            const subListUl = document.querySelector('#'+subListName);
+            const subList = document.querySelectorAll('#'+subListName+' li');
+            // If the item has no sub-list we return nothing
+            if(subListUl === null){
+                return;
+                //LINK TO PAGE?
+            }else{
+                // If the sub-list contains 'third-list' class, it means we are selecting from a secondary list
+                if (subListUl.classList.contains('third-list')) {
+                    // If the sub-menu is already visible then nothing happens
+                    if (subListUl.style.display === 'block') {
+                        return;
+                    }
+                    // Else we display it
+                    else{
+                        displayThirdList(subListUl,subList);
+                        // listenForArrows(subList);
+                    }
+                }
+                // Else we are selecting from the main list
+                else{
+                    // If the sub-menu is already visible then nothing happens
+                    if (subListUl.style.display === 'block') {
+                        return;
+                    }
+                    // Else we display it
+                    else{
+                        displaySecondList(subListUl,subList);
+                        // listenForArrows(subList)
+                    }
+                }
+            } 
+}
+
+
+//Takes two inputs, a required element and an optional value in case the element must move several times.
 function moveItemsUp(item,timesToMove = 0){ 
     // Define all previous and next elements to the Main element
     const mainPrevElements = $(item).prevAll();
@@ -180,14 +270,14 @@ function moveItemsUp(item,timesToMove = 0){
     // We remove the atribute and styling of the previous Main element
     item.removeAttribute('main');
     item.classList.remove('main');
-    // Hide arrow icon
-    item.childNodes[0].style.visibility = 'hidden';
+    //  Hide arrow icon
+    if(item.childNodes[0].classList[0] == "fas"){
+        item.childNodes[0].style.visibility = 'hidden';
+    }
 }
 
 
-/*
-    Takes two inputs, a required element and an optional value in case the element must move several times.
-*/
+    //Takes two inputs, a required element and an optional value in case the element must move several times.
 function moveItemsDown(item,timesToMove = 0){
     // Define all previous and next elements to the Main element
     const mainPrevElements = $(item).prevAll();
@@ -213,7 +303,9 @@ function moveItemsDown(item,timesToMove = 0){
     item.removeAttribute('main');
     item.classList.remove('main');
     //  Hide arrow icon
-    item.childNodes[0].style.visibility = 'hidden';
+    if(item.childNodes[0].classList[0] == "fas"){
+        item.childNodes[0].style.visibility = 'hidden';
+    }
 }
 
 
@@ -249,11 +341,28 @@ function animateBotRight(el){
     })
 }
 
+function resetHiddenList(list){
+    const thirdListNodeEl = $('#'+list.id+' li');
+    //Reset Main attribute for the list that will be hidden
+    $(thirdListNodeEl).each((i,item)=>{
+    
+        if(item.getAttribute('main') == 'true'){
+            item.removeAttribute('main');
+            item.classList.remove('main');
+            thirdListNodeEl[0].setAttribute('main','true');
+            thirdListNodeEl[0].classList.add('main');
+            //  Hide arrow icon
+            if(item.childNodes[0].classList[0] == "fas"){
+                item.childNodes[0].style.visibility = 'hidden';
+            }
+        }
+    })
+}
 
 // Prevents page from going up or down, allowing menu navigation with arrow keys
 window.addEventListener("keydown", function(e) {
     // space and arrow keys
-    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+    if([13,32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
 }, false);
