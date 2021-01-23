@@ -87,59 +87,51 @@ ul{
     margin: 0;
     padding: 0;
     position: absolute;   
-    top: 45%;
-    left: 60%;
-    height: 100%;
-    width: 100%;
     list-style: none;
+}
+#first-list{
+    top: 45%;
+    left: 63%;
+    z-index: 10;
+    
+}
+#second-list{
+    top: 45%;
+    left: 30%;
+    z-index: 10;
+}
+#third-list{
+    top: 45%;
+    left: 5%;
+    z-index: 10;
 }
 li{
     font-size: 40px;
-    transition: all .2s ease-out;
+    min-width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 li i{
     font-size: 20px;
     margin: 20px;
-    /* visibility: hidden; */
+    visibility: hidden;
 }
 .link{
     position: absolute;
     cursor: pointer; 
-    font-size: 30px;
-    font-weight: bold;
-    transition: all 0s ease-out;
+    font-size: 20px;
+    font-weight: bold;    
+    animation: fadeIn ease 2s;
+    transition: all 0s ease-in-out;
     color: whitesmoke;
     font-family: 'Roboto Condensed', sans-serif;
-}
-.minus-two{
-    top: -400px;
-    left: 200px;
-}
-.minus-one{
-    top: -200px;
-    left: 100px;
-}
-.minus-three{
-    top: -600px;
-    left: 300px;
-}
-.one{
-    top: 0px;
-    left: 0px;
-
-}
-.two{
-    top: 200px;
-    left: 100px;
-}
-.three{
-    top: 400px;
-    left: 200px;
 }
 .main{   
     font-size: 40px; 
 }
-.four{
-    top: 600px;
-    left: 300px;
-}
+@keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+    }
