@@ -10,17 +10,14 @@ openMenu.addEventListener('click', ()=>{
 const firstList = document.querySelectorAll('#first-list li');
 const secondList = document.querySelectorAll('#second-list li');
 const thirdList = document.querySelectorAll('#third-list li');
-// Transform each list from a nodeList to an array( necessary in order to reverse it)
-const secondListItemsArr = jQuery.makeArray(secondList);
-const thirdListItemsArr = jQuery.makeArray(thirdList);
-// Reverse each array(necessary for arrow up functionality to prevent eternal loop through items)
-const firstReversedArr = firstListItemsArr.reverse();
-const seconReversedArr = secondListItemsArr.reverse();
-const thirdReversedArr = thirdListItemsArr.reverse();
+// const thirdListItemsArr = jQuery.makeArray(thirdList);
+// const seconReversedArr = secondListItemsArr.reverse();
+// const thirdReversedArr = thirdListItemsArr.reverse();
 
 animateList(firstList);
 animateList(secondList);
 animateList(thirdList);
+listonForArrows(firstList);
 
 function showMenu(){
     menu.style.display = 'block';
@@ -105,11 +102,14 @@ function listenForClick(element){
 
 //Listens for arrow keys function and if its being pressed down or just pressed once
 function listonForArrows(list){
+    // Transform each list from a nodeList to an array( necessary in order to reverse it)
+    const listArr = jQuery.makeArray(list);
+    // Reverse each array(necessary for arrow up functionality to prevent eternal loop through items)
+    const reversedArr = listArr.reverse();
     var down = {};
     $(document).keydown(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if(keycode == '40'){
-            if (down['40'] == null) { // first press
                 // Arrow up was pressed, move to item above
                 reversedArr.forEach(function(element, index){
                     // Search for the Main item
@@ -126,35 +126,28 @@ function listonForArrows(list){
                         reversedArr[index-1].childNodes[0].style.visibility = 'visible';
                         }
                     }
-                });
-                down['40'] = true; // record that the key's down
-            }
+            })
         }else if(keycode === 38){
-            if(down['38'] == null){
-                // Arrow down was pressed, move to item below
-                firstList.forEach(function(element, index){
-                    // Search for the Main item
-                    if(element.hasAttribute('main')){
-                        // If the Main item is the last one then we return null
-                        if (listItems[index-1] === undefined) {
-                            return null;
-                        }
-                        // Else we move every item downwards and we set the next item as the Main
-                        else{                
-                            moveItemsDown(element);           
-                            firstList[index-1].setAttribute('main', 'true');
-                            firstList[index-1].classList.add('main');           
-                            firstList[index-1].childNodes[0].style.visibility = 'visible';    
-                        }
+            // Arrow down was pressed, move to item below
+            list.forEach(function(element, index){
+                // Search for the Main item
+                if(element.hasAttribute('main')){
+                    // If the Main item is the last one then we return null
+                    if (list[index-1] === undefined) {
+                        return null;
                     }
-                });
-            down['38'] == true;
-            }
+                    // Else we move every item downwards and we set the next item as the Main
+                    else{                
+                        moveItemsDown(element);           
+                        list[index-1].setAttribute('main', 'true');
+                        list[index-1].classList.add('main');           
+                        list[index-1].childNodes[0].style.visibility = 'visible';    
+                    }
+                }
+            });
+        }else if(keycode === 37){
+            console.log('left arrow clicked');
         }
-    });
-    $(document).keyup(function(event) {
-        var keycode = (event.keyCode ? event.keyCode : event.which);
-        down[keycode] = null;
     });
 
 }
