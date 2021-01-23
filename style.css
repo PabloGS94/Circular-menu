@@ -12,13 +12,13 @@ html, body{
     justify-content: center;
     flex-direction: column;
 }
-.our-work-btn{
+.open-menu-btn{
     padding: 10px 20px;
     border: 1px solid rgb(104, 174, 197);
     background-color: white;
     cursor: pointer;
 }
-.our-work-btn:hover{
+.open-menu-btn:hover{
     border: 1px solid rgb(94, 87, 197);
     background-color: rgb(104, 174, 197);
 }
@@ -57,9 +57,9 @@ html, body{
     z-index: 7;
     right: 200%;
 }
-#white-background{
+#grey-background{
     z-index: 6;
-    right: 200%;
+    right: 2000%;
 }
 #menu-logo{
     font-size: 40px;
@@ -95,6 +95,7 @@ ul{
 }
 li{
     font-size: 40px;
+    transition: all .2s ease-out;
 }
 li i{
     font-size: 20px;
@@ -106,13 +107,9 @@ li i{
     cursor: pointer; 
     font-size: 30px;
     font-weight: bold;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    min-width: 200px;
-    min-height: 100px;
-    transition: all .2s ease-out;
+    transition: all 0s ease-out;
     color: whitesmoke;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 .minus-two{
     top: -400px;
