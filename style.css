@@ -89,7 +89,7 @@ ul{
     position: absolute;   
     list-style: none;
 }
-#first-list{
+.first-list{
     top: 45%;
     left: 63%;
     z-index: 10;

@@ -7,11 +7,9 @@ openMenu.addEventListener('click', ()=>{
 })
 
 // Get Main list items as nodeList and its parent(ul)
-const firstList = document.querySelectorAll('#first-list li');
-const firstUl = document.querySelector('#first-list');
+const firstList = document.querySelectorAll('#main-list li');
+const firstUl = document.querySelector('#main-list');
 
-animateList(firstList, firstUl);
-// listenForArrows(firstList);
 
 // First function that runs to display the menu 
 function showMenu(){
@@ -29,10 +27,23 @@ function showMenu(){
     $('#first-list').animate({
         left: '57%'
     },700)
+    
+    animateList(firstList, firstUl);
+    listenForArrows(firstList,firstUl);
+    
+    // Prevents page from going up or down, allowing menu navigation with arrow keys
+    window.addEventListener("keydown", function(e) {
+        // space and arrow keys
+        if([13,32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+            e.preventDefault();
+        }
+    }, false);
+
 }
 
 // Takes two inputs, a nodeList with all the li items and its parent and displays the list, aswell as styling the initial location of each item
 function animateList(list, listParent){
+    console.log('animating list');
     listParent.style.display = 'block';
     // Iterate through all elements on the menu and add a click event listener to display that item in the center and move the rest accordingly
     list.forEach(function(element, index){
@@ -49,8 +60,6 @@ function animateList(list, listParent){
             listenForClick(element)        
         })
     });
-    
-    listenForArrows(list);
 }
 
 let fullMenuDisplayed = false;
@@ -86,6 +95,7 @@ function displaySecondList(subListUl,subList){
         },0) 
         fullMenuDisplayed = true;
         animateList(subList, subListUl);
+        listenForArrows(subList,subListUl);
     }
 }
 // Function that displays the third row of lists
@@ -98,6 +108,7 @@ function displayThirdList(subListUl, subList){
     })  
     // Then display the new sub-menu
     animateList(subList, subListUl);
+    listenForArrows(subList,subListUl);
 }
 
 // Main function that determines the element that will be displayed in the center(selected element) and the sub-list related to that item
@@ -146,63 +157,156 @@ function listenForClick(element){
 
 
 //Listens for arrow keys function and if its being pressed down or just pressed once
-function listenForArrows(list){
+function listenForArrows(list,listParent){
     // Transform each list from a nodeList to an array( necessary in order to reverse it)
     const listArr = jQuery.makeArray(list);
     // Reverse each array(necessary for arrow up functionality to prevent eternal loop through items)
     const reversedArr = listArr.reverse();
 
+    //Event listener 
     $(document).keydown(function(event){
+        event.stopPropagation()
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if(keycode === 40){
-            // Arrow up was pressed, move to item above
-            reversedArr.forEach(function(element, index){
-                // Search for the Main item
-                if(element.hasAttribute('main')){
-                    // If the Main item is the last one then we return null
-                    if (reversedArr[index-1] === undefined) {
-                        return null;
-                    }
-                    // Else we move every item upwards and we set the next item as the Main
-                    else{
-                    moveItemsUp(element);
-                    reversedArr[index-1].setAttribute('main', 'true');
-                    reversedArr[index-1].classList.add('main');                        
-                    if(reversedArr[index-1].childNodes[0].classList[0] == "fas"){
-                        reversedArr[index-1].childNodes[0].style.visibility = 'visible'; 
-                    }                              
-                    }
-                }
-            })
+            console.log('down');
+            handleArrowControl(reversedArr, keycode,listParent);
+            event.stopPropagation()
         }else if(keycode === 38){
-            // Arrow down was pressed, move to item below
-            list.forEach(function(element, index){
-                // Search for the Main item
-                if(element.hasAttribute('main')){
-                    // If the Main item is the last one then we return null
-                    if (list[index-1] === undefined) {
-                        return null;
-                    }
-                    // Else we move every item downwards and we set the next item as the Main
-                    else{                
-                        moveItemsDown(element);           
-                        list[index-1].setAttribute('main', 'true');
-                        list[index-1].classList.add('main'); 
-                        if(list[index-1].childNodes[0].classList[0] == "fas"){
-                            list[index-1].childNodes[0].style.visibility = 'visible'; 
-                        }          
-                    }
-                }
-            });
-        }else if(keycode === 37 || keycode === 13){            
-            list.forEach(function(element, index){
-                // Search for the Main item
-                if(element.hasAttribute('main')){
-                    handleSubLists(element);
-                }
-            });
+            console.log('up');
+            handleArrowControl(list, keycode,listParent);
+            event.stopPropagation()
+        }else if(keycode === 37 || keycode === 13){
+            console.log('left'); 
+            handleArrowControl(list,keycode, listParent);
+            event.stopPropagation()
+        }else if(keycode === 39){
+            console.log('right');
+            handleArrowControl(list, keycode, listParent);
+            console.log(event.isImmediatePropagationStopped());
         }
     });
+
+    //Handles which list should be navigated with the arrows depending on which one is being displayed
+    function handleArrowControl(list, keycode,listParent){        
+            // Check if the list that was passed was from the third type and give it functionality
+            if(listParent.classList.contains('third-list')){
+                if(keycode === 40){
+                    arrowDown(list);
+                }else if(keycode === 38){
+                    arrowUp(list);
+                }else if(keycode === 37 || keycode === 13){ 
+                    return;
+                }else if(keycode === 39){
+                    $('.third-list').each((index, thirdList)=>{
+                        resetHiddenList(thirdList);
+                        thirdList.style.display = 'none';
+                    })
+                }
+            }            
+            // Check if the list that was passed was from the second type
+            else if (listParent.classList.contains('second-list')) {
+                let thirdListDisplayed = false;
+                // Then we iterate through all the third lists to see if one is being displayed, if so we remove the functionality from the second list, else we provide that functionality
+                $('.third-list').each((i, thirdList)=>{
+                    if (thirdList.style.display === 'block') {
+                        thirdListDisplayed = true;
+                    }
+                });
+                if (thirdListDisplayed === true){
+                    return;
+                }else{
+                    if(keycode === 40){
+                        arrowDown(list);
+                    }else if(keycode === 38){
+                        arrowUp(list);
+                    }else if(keycode === 37 || keycode === 13){            
+                        list.forEach(function(element, index){
+                            // Search for the Main item
+                            if(element.hasAttribute('main')){
+                                handleSubLists(element);
+                            }
+                        });
+                    }else if(keycode === 39){
+                        $('.second-list').each((index,secondList)=>{
+                            resetHiddenList(secondList);
+                            secondList.style.display = 'none';
+                        }) 
+                    }
+                }
+                
+            }
+            // Else it is the main list            
+            else if (listParent.classList.contains('first-list')){
+                let secondListDisplayed = false;
+                // Check if any of the secondary lists is being displayed, if so we remove functionality from main list, else we provide that functionality
+                $('.second-list').each((i, secondList)=>{
+                    if (secondList.style.display === 'block') {
+                        secondListDisplayed = true;
+                    }
+                });
+                if (secondListDisplayed === true) {
+                    return;
+                }else{
+                    if(keycode === 40){
+                        arrowDown(list);
+                    }else if(keycode === 38){
+                        arrowUp(list);
+                    }else if(keycode === 37 || keycode === 13){   
+                        console.log(list);         
+                        list.forEach(function(element, index){
+                            // Search for the Main item
+                            if(element.hasAttribute('main')){
+                                handleSubLists(element);
+                            }
+                        });
+                    }else if(keycode === 39){
+                        return;
+                    }
+                }
+            }
+    }
+    function arrowDown(reversedArr){        
+        // Arrow up was pressed, move to item above
+        reversedArr.forEach(function(element, index){
+            // Search for the Main item
+            if(element.hasAttribute('main')){
+                // If the Main item is the last one then we return null
+                if (reversedArr[index-1] === undefined) {
+                    return null;
+                }
+                // Else we move every item upwards and we set the next item as the Main
+                else{
+                moveItemsUp(element);
+                reversedArr[index-1].setAttribute('main', 'true');
+                reversedArr[index-1].classList.add('main');                        
+                if(reversedArr[index-1].childNodes[0].classList[0] == "fas"){
+                    reversedArr[index-1].childNodes[0].style.visibility = 'visible'; 
+                }                              
+                }
+            }
+        })
+    };
+    function arrowUp(list){    
+        // Arrow down was pressed, move to item below
+        list.forEach(function(element, index){
+            // Search for the Main item
+            if(element.hasAttribute('main')){
+                // If the Main item is the last one then we return null
+                if (list[index-1] === undefined) {
+                    return null;
+                }
+                // Else we move every item downwards and we set the next item as the Main
+                else{                
+                    moveItemsDown(element);           
+                    list[index-1].setAttribute('main', 'true');
+                    list[index-1].classList.add('main'); 
+                    if(list[index-1].childNodes[0].classList[0] == "fas"){
+                        list[index-1].childNodes[0].style.visibility = 'visible'; 
+                    }          
+                }
+            }
+        });
+    }
 }
 
 
@@ -226,7 +330,7 @@ function handleSubLists(element){
                     // Else we display it
                     else{
                         displayThirdList(subListUl,subList);
-                        // listenForArrows(subList);
+                        // listenForArrows(subList,subListUl);
                     }
                 }
                 // Else we are selecting from the main list
@@ -238,7 +342,7 @@ function handleSubLists(element){
                     // Else we display it
                     else{
                         displaySecondList(subListUl,subList);
-                        // listenForArrows(subList)
+                        // listenForArrows(subList,subListUl)
                     }
                 }
             } 
@@ -360,10 +464,7 @@ function resetHiddenList(list){
     })
 }
 
-// Prevents page from going up or down, allowing menu navigation with arrow keys
-window.addEventListener("keydown", function(e) {
-    // space and arrow keys
-    if([13,32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-        e.preventDefault();
-    }
-}, false);
+
+
+
+
