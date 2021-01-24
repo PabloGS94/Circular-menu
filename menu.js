@@ -56,7 +56,7 @@ function animateList(list, listParent){
             }
         }
         element.addEventListener('click', ()=>{ 
-            listenForClick(element,listParent)        
+            listenForClick(element,listParent)
         })
     });
 }
@@ -66,20 +66,22 @@ let fullMenuDisplayed = false;
 function displaySecondList(subListUl,subList){
     // Prevents background animation from firing again if another secondary menu has been displayed previously
     if (fullMenuDisplayed === true) {
-        // Get all secondary lists and check which one is displayed  and hide it   
-        $('.second-list').each((index,secondList)=>{
-            if (secondList.style.display === 'block') {
-                resetHiddenList(secondList);
-                secondList.style.display = 'none';
-            }
-        }) 
+        //Get all secondary lists and check which one is displayed  and hide it   
+        // $('.second-list').each((index,secondList)=>{
+            // if (secondList.style.display === 'block') {
+            //     console.log('secondList');
+            //     resetHiddenList(secondList);
+            //     secondList.style.display = 'none';
+            // }
+        // }) 
         $('.third-list').each((index, thirdList)=>{
             resetHiddenList(thirdList);
             thirdList.style.display = 'none';
+
         }) 
         // Then display the new sub-menu
         animateList(subList, subListUl);
-        listenForArrows(subList,subListUl);
+        // listenForArrows(subList,subListUl);
     }else{
         $('#second-circle').animate({
             left:'50%'
@@ -95,8 +97,9 @@ function displaySecondList(subListUl,subList){
         },0) 
         fullMenuDisplayed = true;
         animateList(subList, subListUl);
-        listenForArrows(subList,subListUl);
+        // listenForArrows(subList,subListUl);
     }
+    listenForArrows(subList,subListUl);
 }
 // Function that displays the third row of lists
 function displayThirdList(subListUl, subList){
@@ -171,6 +174,8 @@ function listenForClick(element,listParent){
 
 //Listens for arrow keys function and if its being pressed down or just pressed once
 function listenForArrows(list,listParent){
+    // Unbinds any previous arrow event listener to prevent calling the function several times
+    $(document).unbind('keydown');
     // Transform each list from a nodeList to an array( necessary in order to reverse it)
     const listArr = jQuery.makeArray(list);
     // Reverse each array(necessary for arrow up functionality to prevent eternal loop through items)
@@ -179,16 +184,16 @@ function listenForArrows(list,listParent){
     $(document).keydown(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if(keycode === 40){
-            console.log('down');
+            //Arrow Down
             handleArrowControl(reversedArr, keycode,listParent);
         }else if(keycode === 38){
-            console.log('up');
+            //Arrow Up
             handleArrowControl(list, keycode,listParent);
         }else if(keycode === 37 || keycode === 13){
-            console.log('left'); 
+            //Arrow Left or Enter
             handleArrowControl(list,keycode, listParent);
         }else if(keycode === 39){
-            console.log('right');
+            //Arrow Right
             handleArrowControl(list, keycode, listParent);
         }
     });
@@ -204,10 +209,18 @@ function listenForArrows(list,listParent){
                 }else if(keycode === 37 || keycode === 13){ 
                     return;
                 }else if(keycode === 39){
-                    $('.third-list').each((index, thirdList)=>{
+                    //Hide all third lists
+                    $('.third-list').each((i, thirdList)=>{
                         resetHiddenList(thirdList);
                         thirdList.style.display = 'none';
                     })
+                    //Find the secondary list that is being displayed and add the arrow event listener
+                    $('.second-list').each((i,secondList)=>{
+                        if (secondList.style.display === 'block') {
+                            const secondListNodes = document.querySelectorAll('#'+secondList.id+' li');
+                            listenForArrows(secondListNodes,secondList);
+                        }
+                    });
                 }
             }            
             // Check if the list that was passed was from the second type
@@ -234,10 +247,13 @@ function listenForArrows(list,listParent){
                             }
                         });
                     }else if(keycode === 39){
+                        //Hide all secondary lists
                         $('.second-list').each((index,secondList)=>{
                             resetHiddenList(secondList);
                             secondList.style.display = 'none';
                         }) 
+                        // Add event listener again for main list
+                        listenForArrows(firstList,firstUl);
                     }
                 }
                 
@@ -470,31 +486,3 @@ function resetHiddenList(list){
         }
     })
 }
-
-
-
-
-
-
-
-    
-
-// document.querySelectorAll('.third-list').forEach(( list,i)=>{
-//     console.log(list);
-//     if(list.style.display === 'block'){            
-//         const listNodes = document.querySelectorAll('#'+list.id+' li')
-//         listenForArrows(listNodes,list);
-//     }
-//     // const listNodes = document.querySelectorAll('#'+list.id+' li')
-//     // listenForArrows(listNodes,list);
-// })
-// document.querySelectorAll('.second-list').forEach((list,i)=>{
-//     console.log(list);
-//     if(list.style.display === 'block'){            
-//         const listNodes = document.querySelectorAll('#'+list.id+' li')
-//         listenForArrows(listNodes,list);
-//     }
-//     // const listNodes = document.querySelectorAll('#'+list.id+' li')
-//     // console.log(listNodes);
-//     // listenForArrows(listNodes,list);
-// })
