@@ -43,7 +43,6 @@ function showMenu(){
 
 // Takes two inputs, a nodeList with all the li items and its parent and displays the list, aswell as styling the initial location of each item
 function animateList(list, listParent){
-    console.log('animating list');
     listParent.style.display = 'block';
     // Iterate through all elements on the menu and add a click event listener to display that item in the center and move the rest accordingly
     list.forEach(function(element, index){
@@ -57,7 +56,7 @@ function animateList(list, listParent){
             }
         }
         element.addEventListener('click', ()=>{ 
-            listenForClick(element)        
+            listenForClick(element,listParent)        
         })
     });
 }
@@ -80,6 +79,7 @@ function displaySecondList(subListUl,subList){
         }) 
         // Then display the new sub-menu
         animateList(subList, subListUl);
+        listenForArrows(subList,subListUl);
     }else{
         $('#second-circle').animate({
             left:'50%'
@@ -112,7 +112,20 @@ function displayThirdList(subListUl, subList){
 }
 
 // Main function that determines the element that will be displayed in the center(selected element) and the sub-list related to that item
-function listenForClick(element){
+function listenForClick(element,listParent){
+    if (listParent.id === 'main-list') {
+        //hide all other lists
+        $('.second-list').each((index,secondList)=>{
+            if (secondList.style.display === 'block') {
+                resetHiddenList(secondList);
+                secondList.style.display = 'none';
+            }
+        }) 
+        $('.third-list').each((index, thirdList)=>{
+            resetHiddenList(thirdList);
+            thirdList.style.display = 'none';
+        }) 
+    }
         // If its the main element, nothing moves
         if(element.getAttribute('main') == 'true'){ 
             // Search for the Main item
@@ -162,27 +175,21 @@ function listenForArrows(list,listParent){
     const listArr = jQuery.makeArray(list);
     // Reverse each array(necessary for arrow up functionality to prevent eternal loop through items)
     const reversedArr = listArr.reverse();
-
     //Event listener 
     $(document).keydown(function(event){
-        event.stopPropagation()
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if(keycode === 40){
             console.log('down');
             handleArrowControl(reversedArr, keycode,listParent);
-            event.stopPropagation()
         }else if(keycode === 38){
             console.log('up');
             handleArrowControl(list, keycode,listParent);
-            event.stopPropagation()
         }else if(keycode === 37 || keycode === 13){
             console.log('left'); 
             handleArrowControl(list,keycode, listParent);
-            event.stopPropagation()
         }else if(keycode === 39){
             console.log('right');
             handleArrowControl(list, keycode, listParent);
-            console.log(event.isImmediatePropagationStopped());
         }
     });
 
@@ -468,3 +475,26 @@ function resetHiddenList(list){
 
 
 
+
+
+    
+
+// document.querySelectorAll('.third-list').forEach(( list,i)=>{
+//     console.log(list);
+//     if(list.style.display === 'block'){            
+//         const listNodes = document.querySelectorAll('#'+list.id+' li')
+//         listenForArrows(listNodes,list);
+//     }
+//     // const listNodes = document.querySelectorAll('#'+list.id+' li')
+//     // listenForArrows(listNodes,list);
+// })
+// document.querySelectorAll('.second-list').forEach((list,i)=>{
+//     console.log(list);
+//     if(list.style.display === 'block'){            
+//         const listNodes = document.querySelectorAll('#'+list.id+' li')
+//         listenForArrows(listNodes,list);
+//     }
+//     // const listNodes = document.querySelectorAll('#'+list.id+' li')
+//     // console.log(listNodes);
+//     // listenForArrows(listNodes,list);
+// })
