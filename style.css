@@ -1,3 +1,4 @@
+/* Block to delete ,general styling for testing */
 html, body{
     margin: 0;
     padding: 0;
@@ -22,12 +23,12 @@ html, body{
     border: 1px solid rgb(94, 87, 197);
     background-color: rgb(104, 174, 197);
 }
+/* Block to delete */
 
 
-
+/* Menu Background styling and original position of background images */
 .menu{
     display: none;
-
     position: absolute;
     top: 0;
     left: 0;
@@ -74,8 +75,9 @@ html, body{
 
 
 
+/* IMPORTANT STYLING FOR ANIMATION TO WORK  */
 
-nav{ 
+#nav{ 
     z-index: 10;
     position: absolute;   
     top: 0;
@@ -83,7 +85,7 @@ nav{
     height: 100%;
     width: 100%;
 }
-ul{    
+#nav ul{    
     margin: 0;
     padding: 0;
     position: absolute;   
@@ -108,36 +110,35 @@ ul{
     z-index: 10;
     display: none;
 }
-li{
-    font-size: 40px;
-    min-width: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-li i{
-    font-size: 20px;
+.link i{
+    font-size: calc(15px + .5vw);
     margin: 20px;
     visibility: hidden;
 }
 .link{
     position: absolute;
     cursor: pointer; 
-    font-size: 20px;
+    font-size: calc(15px + .5vw);
     font-weight: bold;    
     animation: fadeIn ease 3s;
     transition: all 0s ease-in-out;
     color: whitesmoke;
     font-family: 'Roboto Condensed', sans-serif;
+    min-width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 .main{   
-    font-size: 40px; 
+    font-size: calc(20px + 1vw); 
 }
 @keyframes fadeIn {
     0% {opacity:0;}
     100% {opacity:1;}
 }
+
+/* If you use same icon from fontawesome else delete */
 .fa-sort{
     transform: rotate(90deg);
 }

@@ -274,8 +274,7 @@ function listenForArrows(list,listParent){
                         arrowDown(list);
                     }else if(keycode === 38){
                         arrowUp(list);
-                    }else if(keycode === 37 || keycode === 13){   
-                        console.log(list);         
+                    }else if(keycode === 37 || keycode === 13){  
                         list.forEach(function(element, index){
                             // Search for the Main item
                             if(element.hasAttribute('main')){
