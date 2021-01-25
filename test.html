@@ -3,24 +3,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="menu" id="menu">
-        <img src="menu.jpg" alt="">
-        <nav>
-            <ul>
-                <li class='minus-three link'>Minus three</li>
-                <li class='minus-two link'>Home</li>
-                <li class='minus-one link'>About</li>
-                <li class='main one link' main='true' >Work</li>
-                <li class='two link'>Start a Project</li>
-                <li class='three link'>Contact</li>
-                <li class='four link'>Four</li>
+    <div class='webpage'>
+        <h1>Hello, world!</h1>
+        <button id='open-menu-btn' class='open-menu-btn'>
+            Our work
+        </button>
+    </div>
+    <div id="menu">
+        <nav id='nav'>
+        <!-- Main List -->
+            <ul id='main-list' class='first-list'>
+                <li main='true' sub-list='magento-list' class='link main'><i class="fas fa-caret-left"></i>Magento Ecommerce</li>
+                <li class='link' sub-list='test-list'><i class="fas fa-caret-left"></i>Wordpress Website</li>
+                <li class='link'><i class="fas fa-caret-left"></i>Web Development</li>
+                <li class='link'><i class="fas fa-caret-left"></i>Digital Marketing</li>
+            </ul>
+
+            <!-- Second Lists -->
+            <ul id='magento-list' class='second-list something'>
+                <li main='true' sub-list='integration-list'  class='link main'><i class="fas fa-sort"></i></i>Magento Design and Development</li>
+                <li class='link' sub-list='some-list'><i class="fas fa-sort"></i>Magento 2.0</li>
+                <li class='link'><i class="fas fa-sort"></i>Magento Integrations</li>
+                <li class='link'><i class="fas fa-sort"></i>Magento Migrations</li>
+                <li class='link'><i class="fas fa-sort"></i>Magento Migrations</li>
+                <li class='link'><i class="fas fa-sort"></i>Magento Support & Maintenance</li>
+                <li class='link'><i class="fas fa-sort"></i>Magento Hosting & Server Migration</li>
+            </ul>
+            <ul id='test-list' class='second-list'>
+                <li main='true' class='link main'><i class="fas fa-sort"></i>Test link</li>
+                <li class='link'><i class="fas fa-sort"></i>Another test link</li>
+                <li class='link'><i class="fas fa-sort"></i>And one more</li>
+            </ul>
+
+            <!--Third lists-->
+            <ul id='some-list' class='third-list'>
+                <li main='true'  class='link main'>Some</li>
+                <li class='link'>Something</li>
+            </ul>
+            <ul id='integration-list' class='third-list'>
+                <li main='true'  class='link main'>Futura Integration</li>
+                <li class='link'>Nosto Integration</li>
             </ul>
         </nav>
+        <img id='first-circle' class='menu-image' src="firstCircle.png" alt="">
+        <img id='second-circle' class='menu-image' src="secondCircle.png" alt="">
+        <img id='third-circle' class='menu-image' src="thirdCircle.png" alt="">
+        <img id='grey-background' class='menu-image' src="greyBackground.png"></img>
+        <i id='menu-logo' class="fas fa-shopping-cart"></i>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="menu.js"></script>
+    
 </body>
 </html>

@@ -1,75 +1,148 @@
+/* Block to delete ,general styling for testing */
 html, body{
     margin: 0;
     padding: 0;
     height: 100%;
     width: 100%;
 }
-.menu{
+.webpage{
+    height: 2000px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.open-menu-btn{
+    padding: 10px 20px;
+    border: 1px solid rgb(104, 174, 197);
+    background-color: white;
+    cursor: pointer;
+}
+.open-menu-btn:hover{
+    border: 1px solid rgb(94, 87, 197);
+    background-color: rgb(104, 174, 197);
+}
+/* Block to delete */
+
+
+/* Menu Background styling and original position of background images */
+#menu{
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    overflow: hidden;
+    background: #FF7C00; 
+    animation: fadeIn ease .3s;
 }
-.menu img{
+.menu-image{
     height: 100%;
     width: 100%;
-    position:relative;
+    position:absolute;
+    top: 0;
+    right: 0;
 }
-nav{ 
+#first-circle{
+    z-index: 9;
+    right: -200%;
+}
+#second-circle{
+    z-index: 8;
+    right: 200%;
+}
+#third-circle{
+    z-index: 7;
+    right: 200%;
+}
+#grey-background{
+    z-index: 6;
+    right: 2000%;
+}
+#menu-logo{
+    font-size: 40px;
+    color: white;
+    position: absolute;
+    top: 45%;
+    right: 50px;
+    z-index: 10;
+    animation: fadeIn ease-in-out 1s; 
+    cursor: pointer;
+}
+
+
+
+
+
+/* IMPORTANT STYLING FOR ANIMATION TO WORK  */
+
+#nav{ 
+    z-index: 10;
     position: absolute;   
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
 }
-ul{    
+#nav ul{    
     margin: 0;
     padding: 0;
     position: absolute;   
-    top: 50%;
-    left: 50%;
-    height: 100%;
-    width: 100%;
     list-style: none;
 }
-li{
-    font-size: 40px;
+.first-list{
+    top: 45%;
+    left: 63%;
+    z-index: 10;
+    animation: fadeIn ease-in-out 1s;  
+    display: none;
+}
+.second-list{
+    top: 45%;
+    left: 30%;
+    z-index: 10;
+    display: none;
+}
+.third-list{
+    top: 45%;
+    left: 0%;
+    z-index: 10;
+    display: none;
+}
+.link i{
+    font-size: calc(15px + .5vw);
+    margin: 20px;
+    visibility: hidden;
 }
 .link{
     position: absolute;
     cursor: pointer; 
-    font-size: 20px;
-}
-.minus-two{
-    top: -400px;
-    left: 200px;
-}
-.minus-one{
-    top: -200px;
-    left: 100px;
-}
-.minus-three{
-    top: -600px;
-    left: 300px;
-}
-.one{
-    top: 0px;
-    left: 0px;
-}
-.two{
-    top: 200px;
-    left: 100px;
-}
-.three{
-    top: 400px;
-    left: 200px;
+    font-size: calc(15px + .5vw);
+    font-weight: bold;    
+    animation: fadeIn ease 1s;
+    transition: all 0s ease-in-out;
+    color: whitesmoke;
+    font-family: 'Roboto Condensed', sans-serif;
+    min-width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 .main{   
-    font-size: 40px; 
+    font-size: calc(20px + 1vw); 
 }
-.four{
-    top: 600px;
-    left: 300px;
+@keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+@keyframes fadeOut{
+    0% {opacity:1;}
+    100%{opacity:0;}
+}
+
+/* If you use same icon from fontawesome else delete */
+.fa-sort{
+    transform: rotate(90deg);
 }
