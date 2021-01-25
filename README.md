@@ -7,7 +7,7 @@ How it works:
   
   Each list will be displayed in a column depending on the class given (first-menu, second-menu and third-menu).
   
-  The file will automatically style the initial position of the <li > elements towards the bottom-right of the screen parting from the very first item on the list which
+  The file will automatically style the initial position of the 'li' elements towards the bottom-right of the screen parting from the very first item on the list which
   should always start as the main element of that list.
   
   Once an item on any of the list is clicked, that item will be moved dinamically to the center of the screen, moving all other items on the list accordingly
@@ -27,7 +27,7 @@ MUST HAVE:
   -The button that closes the menu, currently is the logo which has an id of 'menu-logo', so give your logo an id of 'menu-logo' or if you incorporate a different
     way to close the menu, you can change the id in the line 5 of menu.js.
   -The lists must be wrapped inside a <nav> tag with id 'nav', and then wrapped in a <div> tag with id 'menu'.
-  -All lists must be <ul> and populated with <li > items. 
+  -All lists must be <ul> and populated with 'li' items. 
   -There can only be one Main list which must have an id of 'main-list'  (<ul id='main-list></ul>
   -You must think for each list if it belongs to the second or third type and give it the corresponding class of 'second-list' or 'third-list'
    as I mentioned before, there can be any number of second or third type lists.
@@ -37,7 +37,7 @@ MUST HAVE:
    
    Very important!!
    -The very first item of each list no matter the type must have the attribute main='true'
-   -If a <li > has a sub-list ralated to it, that link must have an attribute of sub-list='name-list' and  the list that is related to must have 
+   -If a 'li' has a sub-list ralated to it, that link must have an attribute of sub-list='name-list' and  the list that is related to must have 
     an id of 'name-list'.
    
    
