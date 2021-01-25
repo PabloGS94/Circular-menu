@@ -2,7 +2,7 @@
 
 In order to make this Menu work in your website, there are a few things that need to be adjusted so that the JavaScript file can do it's work.<br>
 
-How it works:
+HOW IT WORKS:<br><br>
   menu.js listens and looks for 3 type of lists, there can only be one Main list, but there can be as many lists of the second or third type.<br>
   
   Each list will be displayed in a column depending on the class given (first-menu, second-menu and third-menu).<br>
@@ -22,7 +22,7 @@ How it works:
   The background has been styled with a particular design if there is any adjusts or changes you would like to do look into the showMenu() and displaySecondList() 
   functions where the animation happens, and as a recommendation play only with the 'left' property to adjust to the screen unless you know exactly what you are doing :D.<br>
   
-MUST HAVE:<br>
+MUST HAVE:<br><br>
   -The button that opens the menu must have an id of 'open-menu-btn', if you would like to change this you can do so in line 2 of menu.js<br><br>
   -The button that closes the menu, currently is the logo which has an id of 'menu-logo', so give your logo an id of 'menu-logo' or if you incorporate a different
     way to close the menu, you can change the id in the line 5 of menu.js.<br><br>
@@ -42,7 +42,7 @@ MUST HAVE:<br>
    
    
    
- OVERALL IT SHOULD LOOK LIKE THIS:<br>
+ OVERALL IT SHOULD LOOK LIKE THIS:<br><br>
  
     <div id='menu'>
         <nav id='nav'>
