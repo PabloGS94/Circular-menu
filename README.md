@@ -47,9 +47,9 @@ MUST HAVE:<br>
     <div id='menu'>
         <nav id='nav'>
             <ul id='main-list' class='second-list'>
-                <li main='true' class='link main' sub-list='name-list' ><i class="fas fa-sort"></i>Main link</li>
-                <li class='link'><i class="fas fa-sort"></i>Test link</li>
-                <li class='link'><i class="fas fa-sort"></i>Test link</li>
+                <li main='true' class='link main' sub-list='name-list' ><i class="fas fa-caret-left"></i>Main link</li>
+                <li class='link'><i class="fas fa-caret-left"></i>Test link</li>
+                <li class='link'><i class="fas fa-caret-left"></i>Test link</li>
             </ul>
             
             <!--Second list-->
