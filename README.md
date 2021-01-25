@@ -2,7 +2,7 @@
 
 In order to make this Menu work in your website, there are a few things that need to be adjusted so that the JavaScript file can do it's work.<br>
 
-How it works:\
+How it works:
   menu.js listens and looks for 3 type of lists, there can only be one Main list, but there can be as many lists of the second or third type.<br>
   
   Each list will be displayed in a column depending on the class given (first-menu, second-menu and third-menu).<br>
@@ -33,7 +33,7 @@ MUST HAVE:<br>
    as I mentioned before, there can be any number of second or third type lists.<br>
   -All links should have the class of 'link'.<br>
   -The icons in each list item are SVG files imported from the Fontawesome library and if you want to use the same you have to include the fontawesome cdn in your html head
-    or you can change the <i> tags for <img> but you will have to modify in lines 499 and 510 of menu.js the I for IMG (note the capital letters).<br>
+    or you can change the '<i>' tags for '<img>' but you will have to modify in lines 499 and 510 of menu.js the I for IMG (note the capital letters).<br>
    
    Very important!!<br>
    -The very first item of each list no matter the type must have the attribute main='true'.<br>
