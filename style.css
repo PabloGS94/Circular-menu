@@ -91,7 +91,7 @@ html, body{
     position: absolute;   
     list-style: none;
 }
-.first-list{
+#main-list{
     top: 45%;
     left: 63%;
     z-index: 10;
