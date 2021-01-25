@@ -27,7 +27,7 @@ html, body{
 
 
 /* Menu Background styling and original position of background images */
-.menu{
+#menu{
     display: none;
     position: absolute;
     top: 0;

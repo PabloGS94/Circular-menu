@@ -58,10 +58,8 @@ function animateList(list, listParent){
         element.style.top = 200*index + 'px'; 
         element.style.left = 100*index + 'px'; 
         if(element.getAttribute('main') == 'true'){
-            //Display arrow icon
-            if(element.childNodes[0].classList[0] == "fas"){
-                element.childNodes[0].style.visibility = 'visible';
-            }
+            //Display arrow icon            
+            elementIsMain(element);
         }
         element.addEventListener('click', ()=>{ 
             listenForClick(element,listParent)
@@ -74,14 +72,6 @@ let fullMenuDisplayed = false;
 function displaySecondList(subListUl,subList){
     // Prevents background animation from firing again if another secondary menu has been displayed previously
     if (fullMenuDisplayed === true) {
-        //Get all secondary lists and check which one is displayed  and hide it   
-        // $('.second-list').each((index,secondList)=>{
-            // if (secondList.style.display === 'block') {
-            //     console.log('secondList');
-            //     resetHiddenList(secondList);
-            //     secondList.style.display = 'none';
-            // }
-        // }) 
         $('.third-list').each((index, thirdList)=>{
             resetHiddenList(thirdList);
             thirdList.style.display = 'none';
@@ -168,13 +158,8 @@ function listenForClick(element,listParent){
                 };
             })
             
-            //Set Selected item to Main            
-            element.setAttribute('main', 'true');
-            element.classList.add('main');
-            //Display arrow icon
-            if(element.childNodes[0].classList[0] == "fas"){
-                element.childNodes[0].style.visibility = 'visible';
-            }
+            //Set Selected item to Main
+            elementIsMain(element);
             handleSubLists(element);
         }
 }
@@ -304,12 +289,8 @@ function listenForArrows(list,listParent){
                 }
                 // Else we move every item upwards and we set the next item as the Main
                 else{
-                moveItemsUp(element);
-                reversedArr[index-1].setAttribute('main', 'true');
-                reversedArr[index-1].classList.add('main');                        
-                if(reversedArr[index-1].childNodes[0].classList[0] == "fas"){
-                    reversedArr[index-1].childNodes[0].style.visibility = 'visible'; 
-                }                              
+                moveItemsUp(element);      
+                elementIsMain(reversedArr[index-1]);                          
                 }
             }
         })
@@ -325,12 +306,8 @@ function listenForArrows(list,listParent){
                 }
                 // Else we move every item downwards and we set the next item as the Main
                 else{                
-                    moveItemsDown(element);           
-                    list[index-1].setAttribute('main', 'true');
-                    list[index-1].classList.add('main'); 
-                    if(list[index-1].childNodes[0].classList[0] == "fas"){
-                        list[index-1].childNodes[0].style.visibility = 'visible'; 
-                    }          
+                    moveItemsDown(element);                 
+                    elementIsMain(list[index-1]);
                 }
             }
         });
@@ -350,41 +327,31 @@ function listenForScroll(list){
         // Reverse each array(necessary for arrow up functionality to prevent eternal loop through items)
         const reversedArr = listArr.reverse();
         if (e.originalEvent.deltaY < 0) {
-        $(reversedArr).each((i, item)=>{
-            if (item.getAttribute('main')){ 
-                if (reversedArr[i-1] === undefined) {
-                    return;
-                }else{           
-                    moveItemsUp(item);
-                    //Set Selected item to Main            
-                    reversedArr[i-1].setAttribute('main', 'true');
-                    reversedArr[i-1].classList.add('main');
-                    //Display arrow icon
-                    if(reversedArr[i-1].childNodes[0].classList[0] == "fas"){
-                        reversedArr[i-1].childNodes[0].style.visibility = 'visible';
+            $(reversedArr).each((i, item)=>{
+                if (item.getAttribute('main')){ 
+                    if (reversedArr[i-1] === undefined) {
+                        return;
+                    }else{           
+                        moveItemsUp(item);
+                        //Set Selected item to Main                 
+                        elementIsMain(reversedArr[i-1]);
                     }
                 }
-            }
-        });
+            });
 
-    } else {
-        $(list).each((i, item)=>{
-            if (item.getAttribute('main')){  
-                if (list[i-1] === undefined) {
-                    return;
-                }else{         
-                    moveItemsDown(item);
-                    //Set Selected item to Main            
-                    list[i-1].setAttribute('main', 'true');
-                    list[i-1].classList.add('main');
-                    //Display arrow icon
-                    if(list[i-1].childNodes[0].classList[0] == "fas"){
-                        list[i-1].childNodes[0].style.visibility = 'visible';
+        } else {
+            $(list).each((i, item)=>{
+                if (item.getAttribute('main')){  
+                    if (list[i-1] === undefined) {
+                        return;
+                    }else{         
+                        moveItemsDown(item);
+                        //Set Selected item to Main
+                        elementIsMain(list[i-1]);
                     }
                 }
-            }
-        });
-    }
+            });
+        }
     });
 }
 
@@ -409,7 +376,6 @@ function handleSubLists(element){
                     // Else we display it
                     else{
                         displayThirdList(subListUl,subList);
-                        // listenForArrows(subList,subListUl);
                     }
                 }
                 // Else we are selecting from the main list
@@ -421,7 +387,6 @@ function handleSubLists(element){
                     // Else we display it
                     else{
                         displaySecondList(subListUl,subList);
-                        // listenForArrows(subList,subListUl)
                     }
                 }
             } 
@@ -451,12 +416,7 @@ function moveItemsUp(item,timesToMove = 0){
     }
 
     // We remove the atribute and styling of the previous Main element
-    item.removeAttribute('main');
-    item.classList.remove('main');
-    //  Hide arrow icon
-    if(item.childNodes[0].classList[0] == "fas"){
-        item.childNodes[0].style.visibility = 'hidden';
-    }
+    elementIsNotMain(item);
 }
 //Takes two inputs, a required element and an optional value in case the element must move several times.
 function moveItemsDown(item,timesToMove = 0){
@@ -481,12 +441,7 @@ function moveItemsDown(item,timesToMove = 0){
     }
 
     // We remove the atribute and styling of the previous Main element
-    item.removeAttribute('main');
-    item.classList.remove('main');
-    //  Hide arrow icon
-    if(item.childNodes[0].classList[0] == "fas"){
-        item.childNodes[0].style.visibility = 'hidden';
-    }
+    elementIsNotMain(item);
 }
 
 
@@ -529,16 +484,32 @@ function resetHiddenList(list){
     $(thirdListNodeEl).each((i,item)=>{
     
         if(item.getAttribute('main') == 'true'){
-            item.removeAttribute('main');
-            item.classList.remove('main');
-            thirdListNodeEl[0].setAttribute('main','true');
-            thirdListNodeEl[0].classList.add('main');
             //  Hide arrow icon
-            if(item.childNodes[0].classList[0] == "fas"){
-                item.childNodes[0].style.visibility = 'hidden';
-            }
+            elementIsNotMain(item);
+            elementIsMain(thirdListNodeEl[0]);
         }
     })
+}
+
+//Takes an element and sets it to main attribute and style
+function elementIsMain(element){
+    element.setAttribute('main','true');
+    element.classList.add('main');
+    //Display arrow icon
+    if(element.childNodes[0].tagName == "I"){
+        element.childNodes[0].style.visibility = 'visible';
+    }
+}
+
+//Takes an element and removes main attribute and style
+function elementIsNotMain(element){
+    // Remove Main attribute and styling
+    element.removeAttribute('main');
+    element.classList.remove('main');
+    //Hide arrow icon
+    if(element.childNodes[0].tagName == "I"){
+        element.childNodes[0].style.visibility = 'hidden';
+    }
 }
 
 //Animation to hide the menu
