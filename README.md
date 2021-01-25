@@ -1,23 +1,23 @@
 # Rotative-menu
 
-In order to make this Menu work in your website, there are a few things that need to be adjusted so that the JavaScript file can do it's work.
+In order to make this Menu work in your website, there are a few things that need to be adjusted so that the JavaScript file can do it's work.\
 
-How it works:
-  menu.js listens and looks for 3 type of lists, there can only be one Main list, but there can be as many lists of the second or third type.
+How it works:\
+  menu.js listens and looks for 3 type of lists, there can only be one Main list, but there can be as many lists of the second or third type.\
   
-  Each list will be displayed in a column depending on the class given (first-menu, second-menu and third-menu).
+  Each list will be displayed in a column depending on the class given (first-menu, second-menu and third-menu).\
   
   The file will automatically style the initial position of the 'li' elements towards the bottom-right of the screen parting from the very first item on the list which
-  should always start as the main element of that list.
+  should always start as the main element of that list.\
   
   Once an item on any of the list is clicked, that item will be moved dinamically to the center of the screen, moving all other items on the list accordingly
   creating the illusion of a wheel. If that selected item has a sub-list associated to it then that list will be displayed, hiding any other sub-list that might
-  have been displayed previously and resetting the hidden list so that the first item is Main again.
-  If the item selected does not have a sub-list associated with,then is up to you to add an <a> tag and link it to another page.
+  have been displayed previously and resetting the hidden list so that the first item is Main again.\
+  If the item selected does not have a sub-list associated with,then is up to you to add an <a> tag and link it to another page.\
   
-  The relationship between a link and a sub-list is very important and it's explained in the 'MUST HAVE' section.
+  The relationship between a link and a sub-list is very important and it's explained in the 'MUST HAVE' section.\
   
-  You can navigate through the menu also with the arrows/enter keys and with the mouse wheel.
+  You can navigate through the menu also with the arrows/enter keys and with the mouse wheel.\
   
   The background has been styled with a particular design if there is any adjusts or changes you would like to do look into the showMenu() and displaySecondList() 
   functions where the animation happens, and as a recommendation play only with the 'left' property to adjust to the screen unless you know exactly what you are doing :D.
