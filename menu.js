@@ -1,10 +1,16 @@
 // Select here the button that opens the menu and the wrapper element of the menu screen
 const openMenu =  document.querySelector('#open-menu-btn');
 const menu = document.querySelector('#menu');
+const body = document.querySelector('body');
+const closeMenu = document.querySelector('#menu-logo');
 //Show menu
 openMenu.addEventListener('click', ()=>{
     showMenu();
 })
+closeMenu.addEventListener('click', ()=>{
+    hideMenu();
+})
+
 
 // Get Main list items as nodeList and its parent(ul)
 const firstList = document.querySelectorAll('#main-list li');
@@ -13,6 +19,7 @@ const firstUl = document.querySelector('#main-list');
 
 // First function that runs to display the menu 
 function showMenu(){
+    body.style.overflow = 'hidden';
     menu.style.display = 'block';
     //Animate menu background
     $('#second-circle').animate({
@@ -24,12 +31,13 @@ function showMenu(){
     $('#first-circle').animate({
         left:'45%'
     },1000);    
-    $('#first-list').animate({
+    $(firstUl).animate({
         left: '57%'
     },700)
     
     animateList(firstList, firstUl);
     listenForArrows(firstList,firstUl);
+    listenForScroll(firstList);
     
     // Prevents page from going up or down, allowing menu navigation with arrow keys
     window.addEventListener("keydown", function(e) {
@@ -81,7 +89,6 @@ function displaySecondList(subListUl,subList){
         }) 
         // Then display the new sub-menu
         animateList(subList, subListUl);
-        // listenForArrows(subList,subListUl);
     }else{
         $('#second-circle').animate({
             left:'50%'
@@ -89,7 +96,7 @@ function displaySecondList(subListUl,subList){
         $('#third-circle').animate({
             left:'15%'
         },1000);
-        $('#first-list').animate({
+        $(firstUl).animate({
             left: '63%'
         },700)    
         $('#grey-background').animate({
@@ -97,9 +104,9 @@ function displaySecondList(subListUl,subList){
         },0) 
         fullMenuDisplayed = true;
         animateList(subList, subListUl);
-        // listenForArrows(subList,subListUl);
     }
     listenForArrows(subList,subListUl);
+    listenForScroll(subList);
 }
 // Function that displays the third row of lists
 function displayThirdList(subListUl, subList){
@@ -112,6 +119,7 @@ function displayThirdList(subListUl, subList){
     // Then display the new sub-menu
     animateList(subList, subListUl);
     listenForArrows(subList,subListUl);
+    listenForScroll(subList);
 }
 
 // Main function that determines the element that will be displayed in the center(selected element) and the sub-list related to that item
@@ -170,8 +178,6 @@ function listenForClick(element,listParent){
             handleSubLists(element);
         }
 }
-
-
 //Listens for arrow keys function and if its being pressed down or just pressed once
 function listenForArrows(list,listParent){
     // Unbinds any previous arrow event listener to prevent calling the function several times
@@ -330,6 +336,57 @@ function listenForArrows(list,listParent){
         });
     }
 }
+//Listens for the mousewheel to scroll up or down when a list is displayed
+function listenForScroll(list){
+    
+    // Unbinds any previous wheel event listener to prevent calling the function several times
+    $(list).unbind('wheel');
+
+    //Scroll event listener
+    $(list).on('wheel', function (e) {
+        
+        // Transform each list from a nodeList to an array( necessary in order to reverse it)
+        const listArr = jQuery.makeArray(list);
+        // Reverse each array(necessary for arrow up functionality to prevent eternal loop through items)
+        const reversedArr = listArr.reverse();
+        if (e.originalEvent.deltaY < 0) {
+        $(reversedArr).each((i, item)=>{
+            if (item.getAttribute('main')){ 
+                if (reversedArr[i-1] === undefined) {
+                    return;
+                }else{           
+                    moveItemsUp(item);
+                    //Set Selected item to Main            
+                    reversedArr[i-1].setAttribute('main', 'true');
+                    reversedArr[i-1].classList.add('main');
+                    //Display arrow icon
+                    if(reversedArr[i-1].childNodes[0].classList[0] == "fas"){
+                        reversedArr[i-1].childNodes[0].style.visibility = 'visible';
+                    }
+                }
+            }
+        });
+
+    } else {
+        $(list).each((i, item)=>{
+            if (item.getAttribute('main')){  
+                if (list[i-1] === undefined) {
+                    return;
+                }else{         
+                    moveItemsDown(item);
+                    //Set Selected item to Main            
+                    list[i-1].setAttribute('main', 'true');
+                    list[i-1].classList.add('main');
+                    //Display arrow icon
+                    if(list[i-1].childNodes[0].classList[0] == "fas"){
+                        list[i-1].childNodes[0].style.visibility = 'visible';
+                    }
+                }
+            }
+        });
+    }
+    });
+}
 
 
 //Takes the Main element either from a click or from arrow left  and displays it's sub-list
@@ -401,9 +458,7 @@ function moveItemsUp(item,timesToMove = 0){
         item.childNodes[0].style.visibility = 'hidden';
     }
 }
-
-
-    //Takes two inputs, a required element and an optional value in case the element must move several times.
+//Takes two inputs, a required element and an optional value in case the element must move several times.
 function moveItemsDown(item,timesToMove = 0){
     // Define all previous and next elements to the Main element
     const mainPrevElements = $(item).prevAll();
@@ -483,5 +538,35 @@ function resetHiddenList(list){
                 item.childNodes[0].style.visibility = 'hidden';
             }
         }
+    })
+}
+
+//Animation to hide the menu
+function hideMenu(){
+    body.style.overflow = 'visible';
+    //Animate menu background
+    $('#second-circle').animate({
+        left:'-200%'
+    },1000);
+    $('#third-circle').animate({
+        left:'-200%'
+    },1000);   
+    $('#first-circle').animate({
+        left:'200%'
+    },1000);  
+    menu.style.animation = 'fadeOut ease 1s';
+    setTimeout(()=>{        
+    menu.style.animation = 'fadeIn ease .3s';
+    menu.style.display = 'none';
+    },800)
+    fullMenuDisplayed = false;
+    
+    const allSecondLists = document.querySelectorAll('.second-list');
+    const allThirdLists = document.querySelectorAll('.third-list');
+    allSecondLists.forEach((list, i)=>{
+        list.style.display = 'none';
+    })
+    allThirdLists.forEach((list, i)=>{
+        list.style.display = 'none';
     })
 }
