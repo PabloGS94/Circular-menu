@@ -70,15 +70,17 @@
 }
 .second-list{
     top: 45%;
-    left: 30%;
+    left:25%;
     z-index: 10;
     display: none;
+    animation: fadeIn ease-in-out .3s; 
 }
 .third-list{
     top: 45%;
     left: 0%;
     z-index: 10;
     display: none;
+    animation: fadeIn ease-in-out .3s; 
 }
 .link i{
     font-size: calc(15px + .5vw);
@@ -90,8 +92,8 @@
     cursor: pointer; 
     font-size: calc(15px + .5vw);
     font-weight: bold;    
-    animation: fadeIn ease 1s;
-    transition: all 0s ease-in-out;
+    /* animation: fadeIn ease 1s; */
+    transition: all ease-out;
     color: whitesmoke;
     font-family: 'Roboto Condensed', sans-serif;
     min-width: 400px;

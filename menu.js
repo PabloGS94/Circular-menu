@@ -51,12 +51,14 @@ function showMenu(){
 
 // Takes two inputs, a nodeList with all the li items and its parent and displays the list, aswell as styling the initial location of each item
 function animateList(list, listParent){
-    listParent.style.display = 'block';
+    setTimeout(() => {
+        listParent.style.display = 'block';        
+    }, 300);
     // Iterate through all elements on the menu and add a click event listener to display that item in the center and move the rest accordingly
     list.forEach(function(element, index){
         // Style every element to the bottom right initially
-        element.style.top = 200*index + 'px'; 
-        element.style.left = 100*index + 'px'; 
+        element.style.top = 150*index + 'px'; 
+        element.style.left = 70*index + 'px'; 
         if(element.getAttribute('main') == 'true'){
             //Display arrow icon            
             elementIsMain(element);
@@ -72,96 +74,91 @@ let fullMenuDisplayed = false;
 function displaySecondList(subListUl,subList){
     // Prevents background animation from firing again if another secondary menu has been displayed previously
     if (fullMenuDisplayed === true) {
-        $('.third-list').each((index, thirdList)=>{
-            resetHiddenList(thirdList);
-            thirdList.style.display = 'none';
-
-        }) 
-        // Then display the new sub-menu
+        // Display the new sub-menu
         animateList(subList, subListUl);
+        subListUl.style.left = '30%';
     }else{
-        $('#second-circle').animate({
-            left:'50%'
-        },1000);
-        $('#third-circle').animate({
-            left:'15%'
-        },1000);
         $(firstUl).animate({
             left: '63%'
-        },700)    
-        $('#grey-background').animate({
-            left:0
-        },0) 
-        fullMenuDisplayed = true;
-        animateList(subList, subListUl);
+        },700)  
+        $('#second-circle').animate({
+            left:'50%'
+        },1000); 
+        setTimeout(() => { 
+            $('#third-circle').animate({
+                left:'15%'
+            },1000);    
+            $('#grey-background').animate({
+                left:0
+            },0) 
+            fullMenuDisplayed = true;
+            animateList(subList, subListUl); 
+            $(subListUl).animate({
+                left: '30%'
+            },700)       
+        }, 300);
     }
     listenForArrows(subList,subListUl);
     listenForScroll(subList);
 }
 // Function that displays the third row of lists
 function displayThirdList(subListUl, subList){
-    // Get all third lists and check which one is displayed  and hide it   
-    $('.third-list').each((index,list)=>{
-        if (list.style.display === 'block') {
-            list.style.display = 'none';
-        }
-    })  
-    // Then display the new sub-menu
+    // Display the new sub-menu
     animateList(subList, subListUl);
     listenForArrows(subList,subListUl);
     listenForScroll(subList);
 }
-
 // Main function that determines the element that will be displayed in the center(selected element) and the sub-list related to that item
 function listenForClick(element,listParent){
     if (listParent.id === 'main-list') {
-        //hide all other lists
-        $('.second-list').each((index,secondList)=>{
-            if (secondList.style.display === 'block') {
-                resetHiddenList(secondList);
-                secondList.style.display = 'none';
-            }
+        // Hide all other lists
+        $('.second-list').each((index, list)=>{
+            hideDisplayedList(list)
         }) 
-        $('.third-list').each((index, thirdList)=>{
-            resetHiddenList(thirdList);
-            thirdList.style.display = 'none';
+        $('.third-list').each((index, list)=>{
+            hideDisplayedList(list)
         }) 
+    }else if(listParent.classList.contains('second-list')){        
+        // Get all third lists and check which one is displayed  and hide it   
+        $('.third-list').each((index,list)=>{
+            hideDisplayedList(list)
+        })  
     }
-        // If its the main element, nothing moves
-        if(element.getAttribute('main') == 'true'){ 
-            // Search for the Main item
-            if(element.hasAttribute('main')){
-                handleSubLists(element);
-            }
-        // If the element is not main iterate through previous and next to find Main
-        }else{    
-            // Get all the previous and next elements to the one clicked
-            const previousAll = $(element).prevAll();
-            const nextAll = $(element).nextAll();
-
-
-            // We iterate through both previous and next elements to determine where is the Main element relative to the selected element
-            previousAll.each((index,item)=>{
-                //Determine the Main element
-                if(item.hasAttribute('main')){                
-                    //Times that each element needs to move depending on how may steps away is the selected element from the Main element
-                    let timesToMove = index;                    
-                    moveItemsUp(item, timesToMove);  
-                }
-            });
-            nextAll.each((index,item)=>{  
-                //Determine the Main element
-                if(item.hasAttribute('main')){                               
-                    //Times that each element needs to move depending on how may steps away is the selected element from the Main element
-                    let timesToMove = index;
-                    moveItemsDown(item, timesToMove);
-                };
-            })
-            
-            //Set Selected item to Main
-            elementIsMain(element);
+    // If its the main element, nothing moves
+    if(element.getAttribute('main') == 'true'){ 
+        // Search for the Main item
+        if(element.hasAttribute('main')){
             handleSubLists(element);
         }
+    // If the element is not main iterate through previous and next to find Main
+    }else{    
+        // Get all the previous and next elements to the one clicked
+        const previousAll = $(element).prevAll();
+        const nextAll = $(element).nextAll();
+
+
+        // We iterate through both previous and next elements to determine where is the Main element relative to the selected element
+        previousAll.each((index,item)=>{
+            //Determine the Main element
+            if(item.hasAttribute('main')){                
+                //Times that each element needs to move depending on how may steps away is the selected element from the Main element
+                let timesToMove = index;                    
+                moveItemsUp(item, timesToMove);  
+            }
+        });
+        nextAll.each((index,item)=>{  
+            //Determine the Main element
+            if(item.hasAttribute('main')){                               
+                //Times that each element needs to move depending on how may steps away is the selected element from the Main element
+                let timesToMove = index;
+                moveItemsDown(item, timesToMove);
+            };
+        })
+        
+        //Set Selected item to Main
+        elementIsMain(element);
+        handleSubLists(element);
+    }
 }
 //Listens for arrow keys function and if its being pressed down or just pressed once
 function listenForArrows(list,listParent){
@@ -201,9 +198,8 @@ function listenForArrows(list,listParent){
                     return;
                 }else if(keycode === 39){
                     //Hide all third lists
-                    $('.third-list').each((i, thirdList)=>{
-                        resetHiddenList(thirdList);
-                        thirdList.style.display = 'none';
+                    $('.third-list').each((i, list)=>{
+                        hideDisplayedList(list);
                     })
                     //Find the secondary list that is being displayed and add the arrow event listener
                     $('.second-list').each((i,secondList)=>{
@@ -239,9 +235,8 @@ function listenForArrows(list,listParent){
                         });
                     }else if(keycode === 39){
                         //Hide all secondary lists
-                        $('.second-list').each((index,secondList)=>{
-                            resetHiddenList(secondList);
-                            secondList.style.display = 'none';
+                        $('.second-list').each((index,list)=>{
+                            hideDisplayedList(list);
                         }) 
                         // Add event listener again for main list
                         listenForArrows(firstList,firstUl);
@@ -391,7 +386,17 @@ function handleSubLists(element){
                 }
             } 
 }
-
+//Takes a list, checks if its being displayed and adds the animation to hide it
+function hideDisplayedList(list){
+    if (list.style.display === 'block') {
+        list.style.animation = 'fadeOut ease-in-out .3s'
+        setTimeout(() => {  
+            list.style.display = 'none';   
+            list.style.animation = 'fadeIn ease-in-out .3s';
+            resetHiddenList(list);         
+        }, 200);
+    }
+}
 
 //Takes two inputs, a required element and an optional value in case the element must move several times.
 function moveItemsUp(item,timesToMove = 0){ 
@@ -451,30 +456,30 @@ function moveItemsDown(item,timesToMove = 0){
 */
 function animateTopLeft(el){
     $(el).animate({
-        top: "-=200",
-        left: "-=100"
-    })
+        top: "-=150",
+        left: "-=70"
+    },300, 'linear')
 }
 
 function animateTopRight(el){
     $(el).animate({
-        top: "-=200",
-        left: "+=100"
-    })
+        top: "-=150",
+        left: "+=70"
+    },300, 'linear')
 }
 
 function animateBotLeft(el){
     $(el).animate({
-        top: "+=200",
-        left: "-=100"
-    })
+        top: "+=150",
+        left: "-=70"
+    },300, 'linear')
 }
 
 function animateBotRight(el){
     $(el).animate({
-        top: "+=200",
-        left: "+=100"
-    })
+        top: "+=150",
+        left: "+=70"
+    },300, 'linear')
 }
 
 // Takes a list that will be hidden and resets the first item to be the main one and takes whatever item was main before and removes the attribute
