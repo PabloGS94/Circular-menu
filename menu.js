@@ -4,6 +4,7 @@ const menu = document.querySelector('#menu');
 const body = document.querySelector('body');
 const closeMenu = document.querySelector('#menu-logo');
 const backMobileArrow = document.querySelector('#back-mobile-arrow')
+const allUl = document.querySelectorAll('#menu ul');
 //Controls second background animation
 var fullMenuDisplayed = false;
 var mobileSecondBackgroundDisplayed = false;
@@ -18,9 +19,19 @@ openMenu.addEventListener('click', ()=>{
 closeMenu.addEventListener('click', ()=>{
     hideMenu(viewportSize);
 })
+//Go back to the preivous list in the Mobile
 backMobileArrow.addEventListener('click', ()=>{
     handleBackMobileList();
 })
+//Add a click event listener to every link in the menu
+allUl.forEach((list)=>{
+    const ulLi = document.querySelectorAll('#'+list.id+' li');
+    ulLi.forEach((li)=>{
+        li.addEventListener('click', ()=>{ 
+            listenForClick(li,list);
+        });
+    });
+});
 
 
 // Get Main list items as nodeList and its parent(ul)
@@ -98,9 +109,6 @@ function animateList(list, listParent){
             //Display arrow icon            
             elementIsMain(element);
         }
-        element.addEventListener('click', ()=>{ 
-            listenForClick(element,listParent)
-        })
     });
 }
 
@@ -110,14 +118,14 @@ function displaySecondList(subListUl,subList){
     if (fullMenuDisplayed === true) {
         // Display the new sub-menu
         animateList(subList, subListUl);
-        subListUl.style.left = '30%';
+        subListUl.style.left = '33%';
     }else{
         if (viewportSize >= 1600) {
             //Computer second background animation
-            $(firstUl).animate({left: '63%'},700)  
+            $(firstUl).animate({left: '63%'},1000)  
             $('#second-circle').animate({left:'50%'},1000); 
-            setTimeout(() => { 
-                $('#third-circle').animate({left:'15%'},1000);    
+            $('#third-circle').animate({left:'15%'},1000);   
+            setTimeout(() => {  
                 $('#grey-background').animate({left:0},0) 
                 fullMenuDisplayed = true;
                 animateList(subList, subListUl); 
@@ -127,19 +135,20 @@ function displaySecondList(subListUl,subList){
             //Smaller computer or tablet second background animation
             $(firstUl).animate({left: '60%'},1000) 
             $('#first-circle').animate({left:'47%'},1000); 
-            $('#second-circle').animate({left:'50%'},1000); 
+            $('#second-circle').animate({left:'50%'},1000);
+            $(subListUl).animate({left: '30%'},1200) 
             setTimeout(() => { 
                 $('#third-circle').animate({left:'18%'},1000);    
                 $('#grey-background').animate({left:0},0) 
                 fullMenuDisplayed = true;
                 animateList(subList, subListUl); 
-                $(subListUl).animate({left: '27%'},700)
             }, 300);
+
         }else{
             //Smaller computer or tablet second background animation
-            $('#second-circle').animate({left:'61%'},400); 
-            $('#third-circle').animate({left:'-20%'},300);
-            $(subListUl).animate({left: '5%'},400);
+            $('#second-circle').animate({left:'61%'},700); 
+            $('#third-circle').animate({left:'-20%'},500);
+            $(subListUl).animate({left: '5%'},700);
             backMobileArrow.style.animation = 'fadeIn ease-in-out .5s';
             backMobileArrow.style.display = 'block';
             animateList(subList, subListUl);      
@@ -150,23 +159,21 @@ function displaySecondList(subListUl,subList){
 }
 // Function that displays the third row of lists
 function displayThirdList(subListUl, subList){
-    if (viewportSize < 740) {
-        setTimeout(() => {                
-            //Smaller computer or tablet third background animation
-            $('#first-circle').animate({left:'45%'},400); 
-            $('#second-circle').animate({left:'70%'},400); 
-            $('#third-circle').animate({left:'60%'},400);    
-            $('#grey-background').animate({left:'0%'},300);
-            $(subListUl).animate({left: '5%'},400);
-            fullMenuDisplayed = true;  
-        }, 100);
-        animateList(subList, subListUl);  
-    } else{
-        // Display the new sub-menu
-        animateList(subList, subListUl);
-        listenForArrows(subList,subListUl);
-        listenForScroll(subList);
+    if (viewportSize < 740) {        
+        //Smaller computer or tablet third background animation
+        $('#first-circle').animate({left:'45%'},700); 
+        $('#second-circle').animate({left:'70%'},700); 
+        $('#third-circle').animate({left:'60%'},700);    
+        $('#grey-background').animate({left:'0%'},0);
+        $(subListUl).animate({left: '5%'},700);
+        fullMenuDisplayed = true;   
+    }else{        
+        $(subListUl).animate({left: '3%'},700);
     }
+    // Display the new sub-menu
+    animateList(subList, subListUl);
+    listenForArrows(subList,subListUl);
+    listenForScroll(subList);
 }
 //Handles which list to go back to in the mobile version of the menu
 function handleBackMobileList(){
@@ -195,37 +202,37 @@ function backToSecondList(list){
         }
     });
     
-    $(secondList).animate({left: '40%',opacity:0},0)
-    $('#second-circle').animate({left:'61%'},400); 
-    $('#third-circle').animate({left:'-20%'},400);  
-    $('#grey-background').animate({left:'-100%'},400); 
-    $(secondList).animate({left: '0%',opacity:1},400);
+    $(secondList).animate({left: '5%',opacity:0},0)
+    $('#second-circle').animate({left:'61%'},500); 
+    $('#third-circle').animate({left:'-20%'},500);  
+    $('#grey-background').animate({left:'-100%'},500); 
+    $(secondList).animate({left: '5%',opacity:1},1400);
 
-    $(list).animate({left:'-100%'},400);            
+    $(list).animate({left:'-100%'},500);            
     resetHiddenList(list);
     setTimeout(() => {
         list.style.display = 'none';
-    }, 400);
+    }, 500);
     fullMenuDisplayed = false;
 }
 //Mobile version => animates to show again first list
 function backToFirstList(list){
-    $('#main-list').animate({left: '40%',opacity:0},0)
-    $('#menu-logo').animate({right:'1%'},400); 
-    $('#first-circle').animate({left:'40%'},400); 
-    $('#second-circle').animate({left:'-30%'},400);
-    $('#third-circle').animate({left:'-100%'},400);  
-    $('#main-list').animate({left: '10%',opacity:1},400);
+    $('#main-list').animate({left: '10%',opacity:0},0)
+    $('#menu-logo').animate({right:'1%'},500); 
+    $('#first-circle').animate({left:'40%'},500); 
+    $('#second-circle').animate({left:'-30%'},500);
+    $('#third-circle').animate({left:'-100%'},500);  
+    $('#main-list').animate({left: '10%',opacity:1},1400);
     backMobileArrow.style.animation = 'fadeOut ease-in-out .5s';
     setTimeout(() => {
         backMobileArrow.style.display = 'none';        
     }, 400);
     
-    $(list).animate({left:'-100%'},400);            
+    $(list).animate({left:'-100%'},500);            
     resetHiddenList(list);
     setTimeout(() => {
         list.style.display = 'none';
-    }, 300);
+    }, 500);
 }
 // Main function that determines the element that will be displayed in the center(selected element) and the sub-list related to that item
 function listenForClick(element,listParent){
@@ -498,7 +505,6 @@ function handleSubLists(element, listParent=0){
                                 listParent.style.animation = 'fadeIn ease-in-out .3s';
                             }, 200);
                         }
-                        console.log('displaying third list');
                         displayThirdList(subListUl,subList);
                     }
                 }
@@ -518,7 +524,6 @@ function handleSubLists(element, listParent=0){
                                 listParent.style.animation = 'fadeIn ease-in-out .3s';
                             }, 200);
                         }
-                        console.log('displaying third list');
                         displaySecondList(subListUl,subList);
                     }
                 }
@@ -684,7 +689,22 @@ function elementIsNotMain(element){
 }
 //Animation to hide the menu
 function hideMenu(viewportSize){
+    const allSecondLists = document.querySelectorAll('.second-list');
+    const allThirdLists = document.querySelectorAll('.third-list');
     body.style.overflow = 'visible';
+    allSecondLists.forEach((list, i)=>{
+        list.style.display = 'none';
+        list.style.opacity = '1';
+        list.style.left = '-100%';
+        resetHiddenList(list);
+    })
+    allThirdLists.forEach((list, i)=>{
+        list.style.display = 'none';
+        list.style.opacity = '1';
+        list.style.left = '-100%';
+        resetHiddenList(list);
+    })
+    resetHiddenList(firstUl);
     //Animate menu background
     $('#second-circle').animate({left:'-200%'},1000);
     $('#third-circle').animate({left:'-200%'},1000);   
@@ -694,19 +714,12 @@ function hideMenu(viewportSize){
     setTimeout(()=>{        
     menu.style.animation = 'fadeIn ease .3s';
     menu.style.display = 'none';
-    allSecondLists.forEach((list, i)=>{
-        list.style.display = 'none';
-        resetHiddenList(list);
-    })
-    allThirdLists.forEach((list, i)=>{
-        list.style.display = 'none';
-        resetHiddenList(list);
-    })
-    resetHiddenList(firstUl);
     },800)
     fullMenuDisplayed = false;
     
-    const allSecondLists = document.querySelectorAll('.second-list');
-    const allThirdLists = document.querySelectorAll('.third-list');
+    backMobileArrow.style.animation = 'fadeOut ease-in-out .5s';
+    setTimeout(() => {
+        backMobileArrow.style.display = 'none';        
+    }, 400);
 
 }
